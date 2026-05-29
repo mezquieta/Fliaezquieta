@@ -186,7 +186,7 @@
         </main>
     </div>
 
-    <!-- CARGA SEGURA DEL SDK OFICIAL DE GOOGLE GEMINI -->
+    <!-- CARGA DEL SDK DE GOOGLE GEMINI -->
     <script type="importmap">
         {
           "imports": {
@@ -195,9 +195,9 @@
         }
     </script>
 
-    <script type="module">
-        import { GoogleGenAI } from '@google/generative-ai';
-
+    <!-- PROGRAMACIÓN PRINCIPAL SIN ERRORES DE RENDERIZADO -->
+    <script type="text/javascript">
+        // Base de Datos Familiar de almacenamiento local
         let familia = JSON.parse(localStorage.getItem('sinergia_familia')) || {
             perfil1: { id: 'perfil1', nombre: 'Emilia 6a', tipo: 'infantil', subtipo: 'hija_6', nivel: 'Initial', score: 120, racha: 5, misionIndex: 0 },
             perfil2: { id: 'perfil2', nombre: 'Juliana 8a', tipo: 'infantil', subtipo: 'hija_8', nivel: 'Initial', score: 180, racha: 6, misionIndex: 0 },
@@ -234,106 +234,8 @@
             cafe: { id: 'cafe', titulo: "☕ High-end Café Order", prompt: "Welcome! What can I get started for you today? We have fresh croissants ready.", systemInfo: "Outdoor climate-controlled boulevard boardwalk café." }
         };
 
-        window.onload = function() {
-            if(localStorage.getItem('gemini_api_key')) {
-                document.getElementById('gemini-key').value = localStorage.getItem('gemini_api_key');
-            }
-            inicializarVoces();
-            inicializarReconocimientoVoz();
-            renderizarConfiguracionPerfiles();
-            renderizarBotonesPerfil();
-            renderizarSelectorEscenariosAdultos();
-            cambiarPerfil('perfil1');
-        };
-
-        function guardarEstado() {
-            localStorage.setItem('sinergia_familia', JSON.stringify(familia));
-        }
-
-        // ASIGNACIÓN GLOBAL DE FUNCIONES PARA EL ENTORNO WEB CLICKABLE
-        window.cambiarPerfil = cambiarPerfil;
-        window.seleccionarTematica = seleccionarTematica;
-        window.volverATematicas = volverATematicas;
-        window.cargarEscenarioFijoAdulto = cargarEscenarioFijoAdulto;
-        window.generarEscenarioSorpresaAI = generarEscenarioSorpresaAI;
-        window.alternarMic = alternarMic;
-        window.escucharEscenarioActual = escucharEscenarioActual;
-        window.toggleConfigPanel = toggleConfigPanel;
-        window.guardarKey = guardarKey;
-        window.cambiarVozSistema = cambiarVozSistema;
-
-        function inicializarVoces() {
-            if ('speechSynthesis' in window) {
-                function cargarVoces() {
-                    const selector = document.getElementById('voice-selector');
-                    const voces = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-                    selector.innerHTML = '';
-                    if(voces.length === 0) {
-                        selector.innerHTML = '<option value="0">Default English Voice</option>';
-                        return;
-                    }
-                    voces.forEach((v, index) => {
-                        let opt = document.createElement('option');
-                        opt.value = index;
-                        opt.innerText = `${v.name} (${v.lang})`;
-                        selector.appendChild(opt);
-                    });
-                }
-                cargarVoces();
-                if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = cargarVoces;
-            }
-        }
-
-        function cambiarVozSistema() { voiceIndexSeleccionada = parseInt(document.getElementById('voice-selector').value) || 0; }
-
-        function hablarNativo(texto) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let utterance = new SpeechSynthesisUtterance(texto);
-                const voces = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-                if(voces.length > 0 && voces[voiceIndexSeleccionada]) utterance.voice = voces[voiceIndexSeleccionada];
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85;
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        function inicializarReconocimientoVoz() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (SpeechRecognition) {
-                reconocimientoVoz = new SpeechRecognition();
-                reconocimientoVoz.lang = 'en-US';
-                reconocimientoVoz.interimResults = false;
-
-                reconocimientoVoz.onresult = (event) => {
-                    const textoEscuchado = event.results[0][0].transcript;
-                    procesarRespuestaVozAdultoGemini(textoEscuchado);
-                };
-                reconocimientoVoz.onerror = () => { detenerMicUI(); };
-                reconocimientoVoz.onend = () => { detenerMicUI(); };
-            }
-        }
-
-        function alternarMic() {
-            if (!esGrabando) {
-                esGrabando = true;
-                document.getElementById('pulse-ring').classList.remove('hidden');
-                document.getElementById('mic-status-text').innerText = "Escuchando voz... ¡Hablá ahora!";
-                document.getElementById('btn-mic-adulto').classList.replace('bg-blue-600', 'bg-red-600');
-                reconocimientoVoz.start();
-            } else {
-                reconocimientoVoz.stop();
-            }
-        }
-
-        function detenerMicUI() {
-            esGrabando = false;
-            document.getElementById('pulse-ring').classList.add('hidden');
-            document.getElementById('mic-status-text').innerText = "Hacé clic para hablar (Voz Real a Gemini)";
-            document.getElementById('btn-mic-adulto').classList.replace('bg-red-600', 'bg-blue-600');
-        }
-
-        function cambiarPerfil(id) {
+        // ENRUTAMIENTO MANUAL SEGURO DE FUNCIONES PARA EVITAR EL BLOCKEO DE PÁGINA BLANCA
+        window.cambiarPerfil = function(id) {
             perfilActualId = id;
             const p = familia[id];
             document.getElementById('vista-infantil').classList.add('hidden');
@@ -346,17 +248,17 @@
                 document.getElementById('puntos-nena').innerText = p.score + " XP";
                 document.getElementById('racha-nena').innerText = p.racha;
                 document.getElementById('saludo-nena').innerText = `¡Hola, ${p.nombre}!`;
-                volverATematicas();
+                window.volverATematicas();
             } else {
                 document.getElementById('vista-adultos').classList.remove('hidden');
                 document.getElementById('subtitulo-adulto').innerText = `Active Explorer: ${p.nombre} — Nivel: [${p.nivel}]`;
                 document.getElementById('zona-conversacion-adulto').classList.add('hidden');
-                cargarEscenarioFijoAdulto('shop');
+                window.cargarEscenarioFijoAdulto('shop');
             }
             actualizarLeaderboardUI();
-        }
+        };
 
-        function seleccionarTematica(idTema) {
+        window.seleccionarTematica = function(idTema) {
             const p = familia[perfilActualId];
             const listaMisiones = misionesProgresoInfantil[idTema];
             let idx = p.misionIndex % listaMisiones.length;
@@ -387,6 +289,110 @@
             });
             contenedor.appendChild(wrapper);
             setTimeout(() => { hablarNativo(tema.audioText); }, 200);
+        };
+
+        window.volverATematicas = function() {
+            document.getElementById('zona-mision').classList.add('hidden');
+            document.getElementById('panel-tematicas').classList.remove('hidden');
+        };
+
+        window.cargarEscenarioFijoAdulto = function(idEsc) {
+            const esc = bancoEscenariosFijos[idEsc];
+            Object.values(bancoEscenariosFijos).forEach(e => {
+                if(document.getElementById(`btn-esc-${e.id}`)) {
+                    document.getElementById(`btn-esc-${e.id}`).className = "bg-slate-50 border p-3 rounded-xl font-bold text-xs shadow-sm text-center";
+                }
+            });
+            if(document.getElementById(`btn-esc-${idEsc}`)) {
+                document.getElementById(`btn-esc-${idEsc}`).className = "bg-blue-50 border-blue-400 p-3 rounded-xl font-bold text-xs shadow-sm text-center text-blue-600 border";
+            }
+            escenarioAdultoActivo = { titulo: esc.titulo, prompt: esc.prompt, systemInfo: esc.systemInfo };
+            document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
+            document.getElementById('escenario-titulo').innerText = escenarioAdultoActivo.titulo;
+            document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${escenarioAdultoActivo.prompt}"`;
+            document.getElementById('user-transcript').classList.add('hidden');
+            document.getElementById('ai-evaluation').classList.add('hidden');
+            setTimeout(() => { hablarNativo(escenarioAdultoActivo.prompt); }, 200);
+        };
+
+        window.toggleConfigPanel = function() { document.getElementById('config-panel').classList.toggle('hidden'); };
+        window.cambiarVozSistema = function() { voiceIndexSeleccionada = parseInt(document.getElementById('voice-selector').value) || 0; };
+        window.escucharScenarioActual = function() { hablarNativo(escenarioAdultoActivo.prompt); };
+        window.guardarKey = function() {
+            const key = document.getElementById('gemini-key').value.trim();
+            localStorage.setItem('gemini_api_key', key);
+            alert("Google Gemini API Key vinculada con éxito.");
+            location.reload();
+        };
+
+        function guardarEstado() { localStorage.setItem('sinergia_familia', JSON.stringify(familia)); }
+
+        function inicializarVoces() {
+            if ('speechSynthesis' in window) {
+                function cargarVoces() {
+                    const selector = document.getElementById('voice-selector');
+                    const voces = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+                    selector.innerHTML = '';
+                    if(voces.length === 0) {
+                        selector.innerHTML = '<option value="0">Default English Voice</option>';
+                        return;
+                    }
+                    voces.forEach((v, index) => {
+                        let opt = document.createElement('option');
+                        opt.value = index;
+                        opt.innerText = `${v.name} (${v.lang})`;
+                        selector.appendChild(opt);
+                    });
+                }
+                cargarVoces();
+                if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = cargarVoces;
+            }
+        }
+
+        function hablarNativo(texto) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(texto);
+                const voces = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+                if(voces.length > 0 && voces[voiceIndexSeleccionada]) utterance.voice = voces[voiceIndexSeleccionada];
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function inicializarReconocimientoVoz() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                reconocimientoVoz = new SpeechRecognition();
+                reconocimientoVoz.lang = 'en-US';
+                reconocimientoVoz.interimResults = false;
+                reconocimientoVoz.onresult = (event) => {
+                    const textoEscuchado = event.results[0][0].transcript;
+                    if(window.dispatchGeminiVoz) window.dispatchGeminiVoz(textoEscuchado);
+                };
+                reconocimientoVoz.onerror = () => { detenerMicUI(); };
+                reconocimientoVoz.onend = () => { detenerMicUI(); };
+            }
+        }
+
+        window.alternarMic = function() {
+            if (!esGrabando) {
+                esGrabando = true;
+                document.getElementById('pulse-ring').classList.remove('hidden');
+                document.getElementById('mic-status-text').innerText = "Escuchando voz... ¡Hablá ahora!";
+                document.getElementById('btn-mic-adulto').classList.replace('bg-blue-600', 'bg-red-600');
+                reconocimientoVoz.start();
+            } else {
+                reconocimientoVoz.stop();
+            }
+        };
+
+        function detenerMicUI() {
+            esGrabando = false;
+            document.getElementById('pulse-ring').classList.add('hidden');
+            document.getElementById('mic-status-text').innerText = "Hacé clic para hablar (Voz Real a Gemini)";
+            document.getElementById('btn-mic-adulto').classList.replace('bg-red-600', 'bg-blue-600');
         }
 
         function evaluarRespuestaInfantil(esCorrecto, idTema) {
@@ -402,121 +408,12 @@
                 guardarEstado();
                 document.getElementById('puntos-nena').innerText = p.score + " XP";
                 setTimeout(() => { hablarNativo("Brilliant! Task completed!"); }, 100);
-                setTimeout(() => { seleccionarTematica(idTema); }, 1500);
+                setTimeout(() => { window.seleccionarTematica(idTema); }, 1500);
             } else {
                 f.innerText = "🔍 ¡Casi! Escuchemos de vuelta.";
                 f.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
             }
             actualizarLeaderboardUI();
-        }
-
-        function volverATematicas() {
-            document.getElementById('zona-mision').classList.add('hidden');
-            document.getElementById('panel-tematicas').classList.remove('hidden');
-        }
-
-        function cargarEscenarioFijoAdulto(idEsc) {
-            const esc = bancoEscenariosFijos[idEsc];
-            Object.values(bancoEscenariosFijos).forEach(e => {
-                if(document.getElementById(`btn-esc-${e.id}`)) {
-                    document.getElementById(`btn-esc-${e.id}`).className = "bg-slate-50 border p-3 rounded-xl font-bold text-xs shadow-sm text-center";
-                }
-            });
-            if(document.getElementById(`btn-esc-${idEsc}`)) {
-                document.getElementById(`btn-esc-${idEsc}`).className = "bg-blue-50 border-blue-400 p-3 rounded-xl font-bold text-xs shadow-sm text-center text-blue-600 border";
-            }
-            escenarioAdultoActivo = { titulo: esc.titulo, prompt: esc.prompt, systemInfo: esc.systemInfo };
-            desplegarConsolaConversacional();
-        }
-
-        function desplegarConsolaConversacional() {
-            document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
-            document.getElementById('escenario-titulo').innerText = escenarioAdultoActivo.titulo;
-            document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${escenarioAdultoActivo.prompt}"`;
-            document.getElementById('user-transcript').classList.add('hidden');
-            document.getElementById('ai-evaluation').classList.add('hidden');
-            setTimeout(() => { hablarNativo(escenarioAdultoActivo.prompt); }, 200);
-        }
-
-        function escucharEscenarioActual() { hablarNativo(escenarioAdultoActivo.prompt); }
-
-        // ====================================================
-        // ENGINE MOTOR: GOOGLE GEMINI CONNECTIVITY INTEGRATION
-        // ====================================================
-        async function generarEscenarioSorpresaAIGemini() {
-            const apiKey = localStorage.getItem('gemini_api_key');
-            if(!apiKey) { alert("Abre 'Configuración Admin' y guarda tu API Key de Google AI Studio."); return; }
-
-            document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
-            document.getElementById('chat-prompt').innerHTML = "<span class='text-blue-500 animate-pulse'>Gemini 1.5 Flash está orquestando tu simulación de rol...</span>";
-
-            const matrixTemasOcultos = [
-                "Expat compound community administration interaction, requesting structural villa revisions.",
-                "Premium metro transit network, requesting high-tier luxury family gold carriage card routing.",
-                "International schooling coordinator presentation, analyzing core curriculum structures.",
-                "Liquefied distributions high-level meeting, discussing pipeline management operations and conservative hedging policies."
-            ];
-            const temaSecreto = matrixTemasOcultos[Math.floor(Math.random() * matrixTemasOcultos.length)];
-
-            try {
-                // Instanciar el cliente oficial de Google Gen AI
-                const ai = new GoogleGenAI({ apiKey: apiKey });
-                const response = await ai.models.generateContent({
-                    model: 'gemini-1.5-flash',
-                    contents: `Context framework: ${temaSecreto}. User language level: ${familia[perfilActualId].nivel}. Design a starting question or line for an English dialogue simulation. Return strictly a raw valid JSON object with keys: "setup_title" and "ai_opening". Do not mention Qatar or Doha explicitly under any circumstance.`,
-                    config: { responseMimeType: "application/json" }
-                });
-
-                const resJson = JSON.parse(response.text);
-                escenarioAdultoActivo = { titulo: `🎲 Gemini: ${resJson.setup_title}`, prompt: resJson.ai_opening, systemInfo: temaSecreto };
-                desplegarConsolaConversacional();
-            } catch (e) {
-                document.getElementById('chat-prompt').innerText = "Error de autenticación con la Key de Gemini.";
-                console.error(e);
-            }
-        }
-
-        function generarEscenarioSorpresaAI() { generarEscenarioSorpresaAIGemini(); }
-
-        async function procesarRespuestaVozAdultoGemini(textoVozReal) {
-            const apiKey = localStorage.getItem('gemini_api_key');
-            if(!apiKey) return;
-
-            const p = familia[perfilActualId];
-            document.getElementById('user-transcript').innerHTML = `<strong>[Tu Voz en Inglés]:</strong> "${textoVozReal}"`;
-            document.getElementById('user-transcript').classList.remove('hidden');
-
-            const evalDiv = document.getElementById('ai-evaluation');
-            evalDiv.innerHTML = "<span class='text-blue-500 animate-pulse'>Gemini analizando la fluidez de tu respuesta por voz...</span>";
-            evalDiv.classList.remove('hidden');
-
-            let strictness = p.nivel === 'Advanced' ? 'Be extremely rigorous, grade scores between 15-30 XP max.' : 'Be supportive, grade between 35-50 XP.';
-
-            try {
-                const ai = new GoogleGenAI({ apiKey: apiKey });
-                const promptFinal = `Character dialogue line was: "${escenarioAdultoActivo.prompt}". User physically replied by voice: "${textoVozReal}". Evaluate the grammar and response context. Context environment setup: ${escenarioAdultoActivo.systemInfo}. ${strictness}. Return strictly a raw JSON object string with keys: "reply" (your next conversational response sentence), "correction" (constructive phonetic or language tip in English), and "xp" (the score integer). No markdown formatting.`;
-                
-                const response = await ai.models.generateContent({
-                    model: 'gemini-1.5-flash',
-                    contents: promptFinal,
-                    config: { responseMimeType: "application/json" }
-                });
-
-                const resJson = JSON.parse(response.text);
-
-                evalDiv.innerHTML = `
-                    <p class="text-blue-600 font-bold"><strong>[Personaje Gemini]:</strong> "${resJson.reply}"</p>
-                    <p class="text-amber-600 font-medium mt-2"><strong>Feedback Estructural:</strong> ${resJson.correction || 'Perfect performance!'}</p>
-                    <p class="text-emerald-600 font-extrabold mt-1">🎉 ¡Ganaste +${resJson.xp} XP para el ranking familiar!</p>
-                `;
-                hablarNativo(resJson.reply);
-                p.score += resJson.xp;
-                guardarEstado();
-                actualizarLeaderboardUI();
-            } catch (e) {
-                evalDiv.innerText = "Error en el payload o verificación de tokens de Gemini.";
-                console.error(e);
-            }
         }
 
         function actualizarLeaderboardUI() {
@@ -551,11 +448,10 @@
                     </select>
                 `;
                 container.appendChild(card);
-                
                 document.getElementById(`sel-handicap-${p.id}`).onchange = function() {
                     familia[p.id].nivel = this.value;
                     guardarEstado();
-                    cambiarPerfil(perfilActualId);
+                    window.cambiarPerfil(perfilActualId);
                 };
             });
         }
@@ -567,7 +463,7 @@
                 let btn = document.createElement('button');
                 btn.className = "font-bold px-3 py-1 rounded-lg border text-xs bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700 transition-colors";
                 btn.innerText = p.nombre;
-                btn.onclick = () => cambiarPerfil(p.id);
+                btn.onclick = () => window.cambiarPerfil(p.id);
                 container.appendChild(btn);
             });
         }
@@ -580,18 +476,132 @@
                 btn.id = `btn-esc-${e.id}`;
                 btn.className = "bg-slate-50 border p-3 rounded-xl font-bold text-xs transition-all text-center";
                 btn.innerText = e.titulo;
-                btn.onclick = () => cargarEscenarioFijoAdulto(e.id);
+                btn.onclick = () => window.cargarEscenarioFijoAdulto(e.id);
                 container.appendChild(btn);
             });
         }
 
-        function toggleConfigPanel() { document.getElementById('config-panel').classList.toggle('hidden'); }
-        function guardarKey() { 
-            const key = document.getElementById('gemini-key').value.trim();
-            localStorage.setItem('gemini_api_key', key); 
-            alert("Google Gemini API Key vinculada con éxito. Listo para operar."); 
-            location.reload();
-        }
+        // Ejecuciones inmediatas iniciales de carga de UI segura
+        inicializarVoces();
+        renderizarConfiguracionPerfiles();
+        renderizarBotonesPerfil();
+        renderizarSelectorEscenariosAdultos();
+        window.cambiarPerfil('perfil1');
+    </script>
+
+    <!-- ENLACE MODULAR ASINCRÓNICO EXCLUSIVO PARA CONECTAR EL MOTOR GEMINI -->
+    <script type="module">
+        import { GoogleGenAI } from '@google/generative-ai';
+
+        window.generarEscenarioSorpresaAI = async function() {
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if(!apiKey) { alert("Abre 'Configuración Admin' y guarda tu API Key de Google AI Studio."); return; }
+
+            document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
+            document.getElementById('chat-prompt').innerHTML = "<span class='text-blue-500 animate-pulse'>Gemini 1.5 Flash está orquestando tu simulación de rol...</span>";
+
+            const matrixTemasOcultos = [
+                "Expat compound community administration interaction, requesting structural villa revisions.",
+                "Premium metro transit network, requesting high-tier luxury family gold carriage card routing.",
+                "International schooling coordinator presentation, analyzing core curriculum structures.",
+                "Liquefied distributions high-level meeting, discussing pipeline management operations and conservative hedging policies."
+            ];
+            const temaSecreto = matrixTemasOcultos[Math.floor(Math.random() * matrixTemasOcultos.length)];
+
+            try {
+                const ai = new GoogleGenAI({ apiKey: apiKey });
+                const response = await ai.models.generateContent({
+                    model: 'gemini-1.5-flash',
+                    contents: `Context framework: ${temaSecreto}. Design a starting question for an English dialogue simulation. Return strictly a raw valid JSON object with keys: "setup_title" and "ai_opening". No markdown formatting or backticks.`,
+                    config: { responseMimeType: "application/json" }
+                });
+
+                const resJson = JSON.parse(response.text);
+                escenarioAdultoActivo = { titulo: `🎲 Gemini: ${resJson.setup_title}`, prompt: resJson.ai_opening, systemInfo: temaSecreto };
+                
+                document.getElementById('escenario-titulo').innerText = escenarioAdultoActivo.titulo;
+                document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${escenarioAdultoActivo.prompt}"`;
+                document.getElementById('user-transcript').classList.add('hidden');
+                document.getElementById('ai-evaluation').classList.add('hidden');
+                
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let utterance = new SpeechSynthesisUtterance(escenarioAdultoActivo.prompt);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.85;
+                    window.speechSynthesis.speak(utterance);
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById('chat-prompt').innerText = "Error al compilar el prompt sorpresa de Gemini.";
+            }
+        };
+
+        window.dispatchGeminiVoz = async function(textoVozReal) {
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if(!apiKey) return;
+
+            const p = familia[perfilActualId];
+            document.getElementById('user-transcript').innerHTML = `<strong>[Tu Voz en Inglés]:</strong> "${textoVozReal}"`;
+            document.getElementById('user-transcript').classList.remove('hidden');
+
+            const evalDiv = document.getElementById('ai-evaluation');
+            evalDiv.innerHTML = "<span class='text-blue-500 animate-pulse'>Gemini analizando la fluidez de tu respuesta por voz...</span>";
+            evalDiv.classList.remove('hidden');
+
+            let strictness = p.nivel === 'Advanced' ? 'Be extremely rigorous, grade scores between 15-30 XP max.' : 'Be supportive, grade between 35-50 XP.';
+
+            try {
+                const ai = new GoogleGenAI({ apiKey: apiKey });
+                const promptFinal = `Character dialogue line was: "${escenarioAdultoActivo.prompt}". User physically replied by voice: "${textoVozReal}". Evaluate the grammar. Context environment setup: ${escenarioAdultoActivo.systemInfo}. ${strictness}. Return strictly a raw JSON object string with keys: "reply" (your next conversational response sentence), "correction" (constructive language tip in English), and "xp" (the score integer). No markdown formatting or backticks.`;
+                
+                const response = await ai.models.generateContent({
+                    model: 'gemini-1.5-flash',
+                    contents: promptFinal,
+                    config: { responseMimeType: "application/json" }
+                });
+
+                const resJson = JSON.parse(response.text);
+
+                evalDiv.innerHTML = `
+                    <p class="text-blue-600 font-bold"><strong>[Personaje Gemini]:</strong> "${resJson.reply}"</p>
+                    <p class="text-amber-600 font-medium mt-2"><strong>Feedback Estructural:</strong> ${resJson.correction || 'Perfect performance!'}</p>
+                    <p class="text-emerald-600 font-extrabold mt-1">🎉 ¡Ganaste +${resJson.xp} XP para el ranking familiar!</p>
+                `;
+                
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let utterance = new SpeechSynthesisUtterance(resJson.reply);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.85;
+                    window.speechSynthesis.speak(utterance);
+                }
+
+                p.score += resJson.xp;
+                localStorage.setItem('sinergia_familia', JSON.stringify(familia));
+                
+                // Actualizar la tabla de posiciones en vivo
+                const list = document.getElementById('leaderboard-list');
+                if(list) {
+                    list.innerHTML = '';
+                    let ordenados = Object.values(familia).sort((a, b) => b.score - a.score);
+                    ordenados.forEach((per, idx) => {
+                        let li = document.createElement('li');
+                        if (idx === 0) {
+                            li.className = "flex justify-between items-center bg-blue-50 p-2 rounded-lg text-slate-900 font-bold text-xs border border-blue-100 shadow-sm";
+                            li.innerHTML = `<span>🏆 ${per.nombre}</span> <span>${per.score} XP</span>`;
+                        } else {
+                            li.className = "flex justify-between items-center px-2 py-1 text-[11px]";
+                            li.innerHTML = `<span>${idx + 1}. ${per.nombre}</span> <span class="font-semibold text-slate-500">${per.score} XP</span>`;
+                        }
+                        list.appendChild(li);
+                    });
+                }
+            } catch (e) {
+                console.error(e);
+                evalDiv.innerText = "Error en el procesamiento seguro de Gemini.";
+            }
+        };
     </script>
 </body>
 </html>
