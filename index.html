@@ -25,14 +25,11 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col antialiased">
 
-    <!-- TOP CONTROL & PROFILE SELECTOR -->
     <div class="bg-slate-900 text-slate-400 border-b border-slate-800 px-4 py-3 flex flex-wrap justify-between items-center text-xs gap-3">
         <div class="flex items-center gap-2 font-medium text-slate-300">
             <span class="h-2 w-2 rounded-full bg-indigo-400 animate-pulse"></span>
             <span>ACTIVE USER:</span>
-            <div id="profile-buttons-container" class="flex gap-1.5 ml-2">
-                <!-- Buttons injected via JavaScript -->
-            </div>
+            <div id="profile-buttons-container" class="flex gap-1.5 ml-2"></div>
         </div>
         <div>
             <button onclick="toggleConfigPanel()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
@@ -41,122 +38,119 @@
         </div>
     </div>
 
-    <!-- ==================================================== -->
-    <!-- PANEL DE CONFIGURACIÓN FAMILIAR (OCULTABLE)           -->
-    <!-- ==================================================== -->
     <div id="config-panel" class="bg-white border-b border-slate-200 p-6 shadow-soft hidden">
         <div class="max-w-5xl mx-auto space-y-6">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Family Dashboard & Voice Configuration</h3>
                 <button onclick="toggleConfigPanel()" class="text-slate-400 hover:text-slate-600 text-sm">✕ Close</button>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Voice Selector -->
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-500 uppercase">System English Voice</label>
-                    <select id="voice-selector" onchange="cambiarVozSistema()" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-lg text-slate-700 focus:outline-none focus:border-indigo-500">
+                    <select id="voice-selector" onchange="cambiarVozSistema()" class="w-full bg-slate-50 border border-slate-200 text-xs p-2.5 rounded-lg text-slate-700 focus:outline-none">
                         <option value="">Loading system voices...</option>
                     </select>
-                    <p class="text-[11px] text-slate-400">Select any English voice installed on your device.</p>
                 </div>
-
-                <!-- DeepSeek Key -->
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-500 uppercase">DeepSeek API Key</label>
                     <div class="flex gap-2">
-                        <input type="password" id="ds-key" placeholder="Paste your API key here" class="flex-1 bg-slate-50 border border-slate-200 text-xs px-3 py-2 rounded-lg text-slate-700 focus:outline-none focus:border-indigo-500">
-                        <button onclick="guardarKey()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-4 py-2 rounded-lg font-medium transition-colors">Save</button>
+                        <input type="password" id="ds-key" placeholder="Paste your API key here" class="flex-1 bg-slate-50 border border-slate-200 text-xs px-3 py-2 rounded-lg text-slate-700 focus:outline-none">
+                        <button onclick="guardarKey()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs px-4 py-2 rounded-lg font-medium">Save</button>
                     </div>
                 </div>
             </div>
-
-            <!-- Profiles Customization -->
             <div class="space-y-3 pt-2">
-                <label class="block text-xs font-bold text-slate-500 uppercase">Manage Profile Names & English Levels</label>
-                <div id="profiles-config-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Injected dynamically -->
-                </div>
+                <label class="block text-xs font-bold text-slate-500 uppercase">Manage Profiles</label>
+                <div id="profiles-config-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
             </div>
         </div>
     </div>
 
-    <!-- ==================================================== -->
-    <!-- INTERFAZ INFANTIL                                    -->
-    <!-- ==================================================== -->
     <div id="vista-infantil" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-gradient-to-b from-indigo-50/40 via-white to-white">
         <header class="max-w-4xl mx-auto w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-soft border border-slate-100">
             <div class="flex items-center gap-3">
                 <div class="h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center text-xl shadow-sm text-white">✨</div>
                 <div>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600">Learning Quest</span>
+                    <span id="txt-quest-label" class="text-[11px] font-bold uppercase tracking-wider text-indigo-600">Learning Quest</span>
                     <h1 id="saludo-nena" class="text-xl font-bold text-slate-800 tracking-tight">Hello!</h1>
                 </div>
             </div>
             <div class="flex gap-5 items-center">
-                <div class="text-right">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Streak</p>
-                    <p class="text-sm font-extrabold text-orange-600 flex items-center gap-1">🔥 5 days</p>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase text-right">Streak</p>
+                    <p class="text-sm font-extrabold text-orange-600">🔥 5 days</p>
                 </div>
                 <div class="h-8 w-px bg-slate-200"></div>
-                <div class="text-right">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Score</p>
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase text-right">Score</p>
                     <p id="puntos-nena" class="text-sm font-extrabold text-indigo-600">350 XP</p>
                 </div>
             </div>
         </header>
 
-        <main class="my-auto max-w-xl mx-auto w-full py-8">
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100">
-                <!-- 6 AÑOS QUEST -->
-                <div id="bloque-6anos" class="hidden text-center space-y-6">
-                    <h2 class="text-2xl font-bold tracking-tight text-slate-800">Interactive Mission</h2>
-                    <button onclick="escucharConsignaInfantil('Touch the red color')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 text-base shadow-interface">
-                        <span>🔊</span> Listen Instruction
+        <main class="my-auto max-w-2xl mx-auto w-full py-6">
+            
+            <div id="panel-tematicas" class="space-y-6">
+                <div class="text-center space-y-1">
+                    <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Choose Your Adventure!</h2>
+                    <p class="text-slate-500 text-sm">Select a theme to start learning and earning points</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="seleccionarTematica('animals')" class="bg-white hover:bg-amber-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                        <div class="text-3xl">🦁</div>
+                        <div class="font-bold text-slate-800 text-sm">Animals</div>
+                        <div class="text-[11px] text-slate-400">Vocabulary & Sound Counting</div>
                     </button>
-                    <div class="grid grid-cols-2 gap-4 pt-4">
-                        <button onclick="responderNena(true)" class="bg-rose-500 h-32 rounded-2xl shadow-soft hover:scale-[1.01] transition-transform border border-rose-600/20"></button>
-                        <button onclick="responderNena(false)" class="bg-sky-500 h-32 rounded-2xl shadow-soft hover:scale-[1.01] transition-transform border border-sky-600/20"></button>
-                    </div>
+                    <button onclick="seleccionarTematica('food')" class="bg-white hover:bg-emerald-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                        <div class="text-3xl">🍎</div>
+                        <div class="font-bold text-slate-800 text-sm">Food & Fruits</div>
+                        <div class="text-[11px] text-slate-400">Basic Math & Counting</div>
+                    </button>
+                    <button onclick="seleccionarTematica('greetings')" class="bg-white hover:bg-indigo-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                        <div class="text-3xl">👋</div>
+                        <div class="font-bold text-slate-800 text-sm">Greetings & Body</div>
+                        <div class="text-[11px] text-slate-400">Basic Conversations</div>
+                    </button>
+                    <button onclick="seleccionarTematica('games')" class="bg-white hover:bg-rose-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                        <div class="text-3xl">🎮</div>
+                        <div class="font-bold text-slate-800 text-sm">Games & Toys</div>
+                        <div class="text-[11px] text-slate-400">Fun Names & Logic</div>
+                    </button>
                 </div>
-
-                <!-- 8 AÑOS QUEST -->
-                <div id="bloque-8anos" class="hidden space-y-6">
-                    <h2 class="text-2xl font-bold tracking-tight text-slate-800 text-center">Logic Challenge</h2>
-                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 text-center text-4xl font-extrabold text-slate-800">
-                        3 + 2 = <span class="text-indigo-600">?</span>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <button onclick="responderNena(false)" class="bg-white hover:bg-slate-50 border border-slate-200 py-3.5 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors">Four (4)</button>
-                        <button onclick="responderNena(true)" class="bg-white hover:bg-slate-50 border border-slate-200 py-3.5 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors">Five (5)</button>
-                        <button onclick="responderNena(false)" class="bg-white hover:bg-slate-50 border border-slate-200 py-3.5 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors">Six (6)</button>
-                    </div>
-                </div>
-
-                <div id="feedback-nena" class="hidden mt-6 p-4 rounded-xl text-center text-sm font-semibold border"></div>
             </div>
+
+            <div id="zona-mision" class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100 hidden relative">
+                <button onclick="volverATematicas()" class="absolute top-4 right-4 text-xs text-slate-400 hover:text-slate-600">✕ Change Theme</button>
+                
+                <div class="space-y-6">
+                    <div class="text-center space-y-1">
+                        <h3 id="mision-categoria-titulo" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Category</h3>
+                        <h2 id="mision-pregunta-texto" class="text-xl font-bold text-slate-800">Mission Question</h2>
+                    </div>
+
+                    <button id="btn-audio-infantil" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 text-base shadow-interface">
+                        <span>🔊</span> Listen to Instruction
+                    </button>
+
+                    <div id="contenedor-respuestas" class="pt-2"></div>
+
+                    <div id="feedback-nena" class="hidden p-4 rounded-xl text-center text-sm font-semibold border"></div>
+                </div>
+            </div>
+
         </main>
         <footer class="text-center text-xs text-slate-400 font-medium">Family Shared Core Hub</footer>
     </div>
 
-    <!-- ==================================================== -->
-    <!-- INTERFAZ ADULTOS                                     -->
-    <!-- ==================================================== -->
     <div id="vista-adultos" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-[#f8fafc]">
         <header class="max-w-5xl mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-soft border border-slate-100 gap-4">
             <div class="space-y-1">
-                <div class="flex items-center gap-2">
-                    <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-md border border-indigo-100 uppercase tracking-wider">Immersion Hub</span>
-                </div>
+                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded-md border border-indigo-100 uppercase tracking-wider">Immersion Hub</span>
                 <h1 id="subtitulo-adulto" class="text-xl font-bold text-slate-900 tracking-tight">Active Sandbox</h1>
             </div>
-            
-            <!-- Dynamic Leaderboard Card -->
             <div class="bg-slate-50 border border-slate-200/60 p-4 rounded-xl text-xs w-full md:w-64 shadow-sm">
                 <p class="font-bold text-slate-500 mb-2.5 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">🏆 Weekly Scoreboard</p>
-                <ol id="leaderboard-list" class="space-y-2 font-medium text-slate-600">
-                    <!-- Dynamic sorted items -->
-                </ol>
+                <ol id="leaderboard-list" class="space-y-2 font-medium text-slate-600"></ol>
             </div>
         </header>
 
@@ -168,15 +162,13 @@
                         🔊 Listen to AI
                     </button>
                 </div>
-                
                 <div class="bg-slate-50 rounded-2xl p-5 min-h-[160px] border border-slate-200/60 text-sm space-y-4 font-medium leading-relaxed text-slate-700">
                     <div id="chat-prompt" class="text-indigo-600 font-semibold"></div>
                     <div id="user-transcript" class="text-emerald-600 pl-3 border-l-2 border-emerald-500/40 hidden italic"></div>
                     <div id="ai-evaluation" class="text-slate-600 border-t border-slate-200 pt-4 text-xs hidden space-y-2"></div>
                 </div>
-
                 <div class="flex flex-col items-center justify-center py-6 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 gap-3">
-                    <button onclick="ejecutarLlamadaDeepSeek()" class="h-14 w-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-indigo-600/20 shadow-lg active:scale-95 transition-all text-xl border border-indigo-500/20">
+                    <button onclick="ejecutarLlamadaDeepSeek()" class="h-14 w-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-indigo-600/20 shadow-lg active:scale-95 transition-all text-xl">
                         🎙️
                     </button>
                     <p class="text-xs text-slate-500 font-semibold">Click to simulate your voice answer</p>
@@ -186,11 +178,7 @@
         <footer class="text-center text-[11px] text-slate-400 font-medium">Private Immersive Workspace</footer>
     </div>
 
-    <!-- ==================================================== -->
-    <!-- LOGICA SCRIPT AVANZADA                               -->
-    <!-- ==================================================== -->
     <script>
-        // CONFIGURACIÓN DE PERFILES EDITABLE POR EL PADRE
         let familia = {
             perfil1: { id: 'perfil1', nombre: 'Nena 6a', tipo: 'infantil', subtipo: 'hija_6', nivel: 'Initial', score: 350 },
             perfil2: { id: 'perfil2', nombre: 'Nena 8a', tipo: 'infantil', subtipo: 'hija_8', nivel: 'Initial', score: 420 },
@@ -201,17 +189,56 @@
         let perfilActualId = 'perfil1';
         let voiceIndexSeleccionada = 0;
 
-        const escenarios = {
-            esposa: {
-                titulo: "Scenario: Local Shop Counter",
-                prompt: "Hello! Can I help you find a specific size or color for this item?",
-                mockInput: "Yes please, I need this jacket in medium size."
+        // BANCO DE DATOS DE TEMÁTICAS PARA LAS NENAS (Simula Supabase de forma interactiva)
+        const tematicasInfantiles = {
+            animals: {
+                label: "🦁 Animals Quest",
+                pregunta: "Listen and find the LION!",
+                audioText: "Listen closely: find the lion!",
+                tipoUI: "botones_grandes",
+                opciones: [
+                    { texto: "🦁 Lion", correcta: true, estilo: "bg-amber-500" },
+                    { texto: "🐵 Monkey", correcta: false, estilo: "bg-orange-400" }
+                ]
             },
-            papa: {
-                titulo: "Scenario: Strategy & Logistics Briefing",
-                prompt: "We need to optimize our local transport options immediately. What is your advice on our baseline strategy?",
-                mockInput: "We should adopt a highly conservative approach due to market volatility before expanding operations."
+            food: {
+                label: "🍎 Food & Fruits",
+                pregunta: "How many apples do you hear? (2 apples + 1 apple)",
+                audioText: "Two apples plus one apple. How many apples?",
+                tipoUI: "matematica",
+                opciones: [
+                    { texto: "Two (2)", correcta: false },
+                    { texto: "Three (3)", correcta: true },
+                    { texto: "Four (4)", correcta: false }
+                ]
+            },
+            greetings: {
+                label: "👋 Greetings & Conversations",
+                pregunta: "How do you say 'Hola' in English?",
+                audioText: "How do you say hola in English?",
+                tipoUI: "matematica", // Estilo lista limpia
+                opciones: [
+                    { texto: "Goodbye", correcta: false },
+                    { texto: "Thank you", correcta: false },
+                    { texto: "Hello", correcta: true }
+                ]
+            },
+            games: {
+                label: "🎮 Games & Toys",
+                pregunta: "Count the toys: 3 blocks + 3 blocks",
+                audioText: "Three blocks plus three blocks. What is the total?",
+                tipoUI: "matematica",
+                opciones: [
+                    { texto: "Five (5)", correcta: false },
+                    { texto: "Six (6)", correcta: true },
+                    { texto: "Seven (7)", correcta: false }
+                ]
             }
+        };
+
+        const escenariosAdultos = {
+            esposa: { titulo: "Scenario: Local Shop Counter", prompt: "Hello! Can I help you find a specific size or color for this item?", mockInput: "Yes please, I need this jacket in medium size.", systemInfo: "Act as a store clerk. Give a short reply, a tiny correction in English, and assign scores between 35 and 48 XP." },
+            papa: { titulo: "Scenario: Strategy & Logistics Briefing", prompt: "We need to optimize our local transport options immediately. What is your advice on our baseline strategy?", mockInput: "We should adopt a highly conservative approach due to market volatility before expanding operations.", systemInfo: "Act as a corporate director. Give a short professional reply, corrections in English if needed, and give points between 20 and 42 XP." }
         };
 
         window.onload = function() {
@@ -224,22 +251,17 @@
             cambiarPerfil('perfil1');
         };
 
-        // ENRUTADOR DE VOCES NATIVAS DEL NAVEGADOR
         function inicializarVoces() {
             if ('speechSynthesis' in window) {
                 function cargarVoces() {
                     const selector = document.getElementById('voice-selector');
                     const voces = window.speechSynthesis.getVoices();
                     selector.innerHTML = '';
-                    
-                    // Filtrar solo las voces en inglés disponibles en la máquina
                     const vocesIngles = voces.filter(v => v.lang.startsWith('en'));
-                    
                     if(vocesIngles.length === 0) {
-                        selector.innerHTML = '<option value="0">Default System Voice (English auto)</option>';
+                        selector.innerHTML = '<option value="0">Default System Voice (English)</option>';
                         return;
                     }
-
                     vocesIngles.forEach((v, index) => {
                         let opt = document.createElement('option');
                         opt.value = index;
@@ -248,40 +270,32 @@
                     });
                 }
                 cargarVoces();
-                if (window.speechSynthesis.onvoiceschanged !== undefined) {
-                    window.speechSynthesis.onvoiceschanged = cargarVoces;
-                }
+                if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = cargarVoces;
             }
         }
 
-        function cambiarVozSistema() {
-            voiceIndexSeleccionada = parseInt(document.getElementById('voice-selector').value) || 0;
-        }
+        function cambiarVozSistema() { voiceIndexSeleccionada = parseInt(document.getElementById('voice-selector').value) || 0; }
 
         function hablarNativo(texto) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 let utterance = new SpeechSynthesisUtterance(texto);
                 const voces = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-                if(voces.length > 0 && voces[voiceIndexSeleccionada]) {
-                    utterance.voice = voces[voiceIndexSeleccionada];
-                }
+                if(voces.length > 0 && voces[voiceIndexSeleccionada]) utterance.voice = voces[voiceIndexSeleccionada];
                 utterance.lang = 'en-US';
-                utterance.rate = 0.85;
+                utterance.rate = 0.82; // Un toque más pausado para las nenas
                 window.speechSynthesis.speak(utterance);
             }
         }
 
-        // GENERACIÓN DE PANEL DE CONTROL EDITABLE
         function renderizarConfiguracionPerfiles() {
             const container = document.getElementById('profiles-config-container');
             container.innerHTML = '';
-            
             Object.values(familia).forEach(p => {
                 let card = document.createElement('div');
                 card.className = "bg-slate-50 border border-slate-200 p-3 rounded-xl space-y-2";
                 card.innerHTML = `
-                    <p class="text-[10px] font-bold text-slate-400 uppercase">${p.id === 'perfil3' || p.id === 'perfil4' ? 'Adult' : 'Child'}</p>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">${p.tipo === 'adulto' ? 'Adult' : 'Child'}</p>
                     <input type="text" value="${p.nombre}" onchange="actualizarNombrePerfil('${p.id}', this.value)" class="w-full bg-white border border-slate-200 text-xs px-2 py-1 rounded font-semibold text-slate-800">
                     <select onchange="actualizarNivelPerfil('${p.id}', this.value)" class="w-full bg-white border border-slate-200 text-[11px] p-1 rounded text-slate-600 font-medium">
                         <option value="Initial" ${p.nivel==='Initial'?'selected':''}>Level: Initial</option>
@@ -298,7 +312,7 @@
             container.innerHTML = '';
             Object.values(familia).forEach(p => {
                 let btn = document.createElement('button');
-                btn.className = `font-semibold px-3 py-1.5 rounded-lg transition-colors border ${p.tipo === 'infantil' ? 'text-amber-400 border-slate-700 bg-slate-800' : 'text-white bg-indigo-600 border-indigo-500'}`;
+                btn.className = `font-semibold px-3 py-1.5 rounded-lg transition-colors border text-xs ${p.tipo === 'infantil' ? 'text-amber-400 border-slate-700 bg-slate-800' : 'text-white bg-indigo-600 border-indigo-500'}`;
                 btn.innerText = p.nombre;
                 btn.onclick = () => cambiarPerfil(p.id);
                 container.appendChild(btn);
@@ -317,46 +331,83 @@
             if(perfilActualId === id) cambiarPerfil(id);
         }
 
-        function toggleConfigPanel() {
-            document.getElementById('config-panel').classList.toggle('hidden');
+        function toggleConfigPanel() { document.getElementById('config-panel').classList.toggle('hidden'); }
+        function guardarKey() { localStorage.setItem('ds_api_key', document.getElementById('ds-key').value); alert("Key linked."); }
+
+        // MANEJO DE TEMÁTICAS DINÁMICAS
+        function seleccionarTematica(idTema) {
+            const tema = tematicasInfantiles[idTema];
+            if (!tema) return;
+
+            document.getElementById('panel-tematicas').classList.add('hidden');
+            const zonaMision = document.getElementById('zona-mision');
+            zonaMision.classList.remove('hidden');
+
+            document.getElementById('mision-categoria-titulo').innerText = tema.label;
+            document.getElementById('mision-pregunta-texto').innerText = tema.pregunta;
+            
+            // Configurar botón de audio
+            document.getElementById('btn-audio-infantil').onclick = () => hablarNativo(tema.audioText);
+
+            // Inyectar la interfaz correcta de respuestas
+            const contenedor = document.getElementById('contenedor-respuestas');
+            contenedor.innerHTML = '';
+            document.getElementById('feedback-nena').classList.add('hidden');
+
+            if (tema.tipoUI === 'botones_grandes') {
+                let grid = document.createElement('div');
+                grid.className = "grid grid-cols-2 gap-4";
+                tema.opciones.forEach(opt => {
+                    let btn = document.createElement('button');
+                    btn.className = `${opt.estilo} h-32 rounded-2xl shadow-soft hover:scale-[1.01] transition-transform text-white font-bold text-lg border border-black/10`;
+                    btn.innerText = opt.texto;
+                    btn.onclick = () => evaluarRespuestaInfantil(opt.correcta, tema.audioText);
+                    grid.appendChild(btn);
+                });
+                contenedor.appendChild(grid);
+            } else {
+                let flex = document.createElement('div');
+                flex.className = "grid grid-cols-1 sm:grid-cols-3 gap-3";
+                tema.opciones.forEach(opt => {
+                    let btn = document.createElement('button');
+                    btn.className = "bg-white hover:bg-slate-50 border border-slate-200 py-3.5 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors";
+                    btn.innerText = opt.texto;
+                    btn.onclick = () => evaluarRespuestaInfantil(opt.correcta, tema.audioText);
+                    flex.appendChild(btn);
+                });
+                contenedor.appendChild(flex);
+            }
+
+            // Hablar automáticamente la consigna al entrar
+            setTimeout(() => { hablarNativo(tema.audioText); }, 200);
         }
 
-        function guardarKey() {
-            const key = document.getElementById('ds-key').value;
-            localStorage.setItem('ds_api_key', key);
-            alert("Key successfully linked.");
+        function volverATematicas() {
+            document.getElementById('zona-mision').classList.add('hidden');
+            document.getElementById('panel-tematicas').classList.remove('hidden');
         }
 
-        // CAMBIO DE VISTA DINÁMICA
         function cambiarPerfil(id) {
             perfilActualId = id;
             const p = familia[id];
             
             document.getElementById('vista-infantil').classList.add('hidden');
             document.getElementById('vista-adultos').classList.add('hidden');
-            document.getElementById('bloque-6anos').classList.add('hidden');
-            document.getElementById('bloque-8anos').classList.add('hidden');
-            document.getElementById('feedback-nena').classList.add('hidden');
             document.getElementById('user-transcript').classList.add('hidden');
             document.getElementById('ai-evaluation').classList.add('hidden');
 
             if (p.tipo === 'infantil') {
                 document.getElementById('vista-infantil').classList.remove('hidden');
                 document.getElementById('puntos-nena').innerText = p.score + " XP";
-                document.getElementById('saludo-nena').innerText = `Hello, ${p.nombre}! [${p.nivel}]`;
-                
-                if (p.subtipo === 'hija_6') {
-                    document.getElementById('bloque-6anos').classList.remove('hidden');
-                } else {
-                    document.getElementById('bloque-8anos').classList.remove('hidden');
-                }
+                document.getElementById('saludo-nena').innerText = `Hello, ${p.nombre}!`;
+                document.getElementById('txt-quest-label').innerText = `Learning Quest [Level: ${p.nivel}]`;
+                volverATematicas(); // Resetear al menú de temas
             } else {
                 document.getElementById('vista-adultos').classList.remove('hidden');
                 const esc = escenarios[p.subtipo] || escenarios.esposa;
                 document.getElementById('subtitulo-adulto').innerText = `Active Explorer: ${p.nombre} — Current English Level: [${p.nivel}]`;
                 document.getElementById('escenario-titulo').innerText = esc.titulo;
                 document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${esc.prompt}"`;
-                
                 setTimeout(() => { hablarNativo(esc.prompt); }, 300);
             }
             actualizarLeaderboardUI();
@@ -368,40 +419,30 @@
             hablarNativo(esc.prompt);
         }
 
-        function escucharConsignaInfantil(texto) {
-            hablarNativo(texto);
-        }
-
-        function responderNena(esCorrecto) {
+        function evaluarRespuestaInfantil(esCorrecto, repetirTexto) {
             const f = document.getElementById('feedback-nena');
             const p = familia[perfilActualId];
             f.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-200', 'bg-rose-50', 'text-rose-700', 'border-rose-200');
             
             if (esCorrecto) {
-                f.innerText = "✨ Brilliant! Level completed successfully!";
+                f.innerText = "✨ Brilliant! Task completed successfully!";
                 f.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
-                
-                // Hándicap inflado según el nivel configurado
                 let addXp = p.nivel === 'Initial' ? 50 : p.nivel === 'Intermediate' ? 40 : 30;
                 p.score += addXp;
-                
                 document.getElementById('puntos-nena').innerText = p.score + " XP";
-                hablarNativo("Brilliant! Level completed successfully!");
+                hablarNativo("Brilliant! Task completed successfully!");
             } else {
                 f.innerText = "🔍 Keep trying! Let's listen one more time.";
                 f.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
                 hablarNativo("Keep trying!");
+                setTimeout(() => { hablarNativo(repetirTexto); }, 1500);
             }
             actualizarLeaderboardUI();
         }
 
-        // DEEPSEEK EVALUATOR CORE
         async function ejecutarLlamadaDeepSeek() {
             const apiKey = localStorage.getItem('ds_api_key');
-            if(!apiKey) {
-                alert("Please open Admin Config and save your DeepSeek API Key.");
-                return;
-            }
+            if(!apiKey) { alert("Please open Admin Config and save your DeepSeek API Key."); return; }
 
             const p = familia[perfilActualId];
             const esc = escenarios[p.subtipo] || escenarios.esposa;
@@ -410,10 +451,9 @@
             document.getElementById('user-transcript').classList.remove('hidden');
 
             const evalDiv = document.getElementById('ai-evaluation');
-            evalDiv.innerHTML = "<span class='text-slate-400 animate-pulse'>DeepSeek analyzing metrics based on your profile level...</span>";
+            evalDiv.innerHTML = "<span class='text-slate-400 animate-pulse'>DeepSeek analyzing metrics...</span>";
             evalDiv.classList.remove('hidden');
 
-            // Modificador de hándicap invisible para pasar a DeepSeek
             let strictness = p.nivel === 'Advanced' ? 'Be very strict and grade low points between 15-30 XP max' : 'Be supportive and grade between 35-50 XP';
 
             try {
@@ -426,7 +466,7 @@
                     body: JSON.stringify({
                         model: "deepseek-chat",
                         messages: [
-                            { role: "system", content: `You are an immersive language tutor. Context level: ${p.nivel}. ${strictness}. Respond STRICTLY with a raw JSON object string with fields: "reply" (string), "correction" (string in English), and "xp" (number). Do not include markdown formatting or backticks.` },
+                            { role: "system", content: `You are an immersive language platform tutor. Everything in English. Context level: ${p.nivel}. ${strictness}. Respond STRICTLY with a raw JSON object string with fields: "reply" (string), "correction" (string in English), and "xp" (number). Do not include markdown formatting or backticks.` },
                             { role: "user", content: `Context prompt: ${esc.prompt}. User answered: ${esc.mockInput}` }
                         ],
                         response_format: { type: "json_object" }
@@ -447,20 +487,16 @@
                 actualizarLeaderboardUI();
 
             } catch (error) {
-                evalDiv.innerHTML = "<span class='text-rose-500 font-medium'>Connection or payload serialization error.</span>";
+                evalDiv.innerHTML = "<span class='text-rose-500 font-medium'>API connection error. Check your Key.</span>";
                 console.error(error);
             }
         }
 
-        // RE-SORT Y RENDER DE TABLA DE POSICIONES EN VIVO
         function actualizarLeaderboardUI() {
             const list = document.getElementById('leaderboard-list');
             if(!list) return;
             list.innerHTML = '';
-
-            // Convertir objeto a array y ordenar de mayor a menor score
             let itemsOrdenados = Object.values(familia).sort((a, b) => b.score - a.score);
-
             itemsOrdenados.forEach((p, idx) => {
                 let li = document.createElement('li');
                 if (idx === 0) {
