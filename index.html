@@ -3,133 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitácora Familiar - Aprendizaje en Aventura</title>
+    <title>Sinergia Familiar - Language Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
-        .font-kids { font-family: 'Fredoka', sans-serif; }
-        .font-adults { font-family: 'Inter', sans-serif; }
-        .font-serif-elegant { font-family: 'Playfair Display', serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
+    <script>
+        // Configuración de Tailwind para usar bordes y sombras modernas
+        tailwind.config = {
+            theme: {
+                extend: {
+                    boxShadow: {
+                        'soft': '0 2px 12px -3px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.03)',
+                        'premium': '0 20px 40px -15px rgba(0, 0, 0, 0.07)',
+                        'neon': '0 0 20px rgba(99, 102, 241, 0.15)'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-stone-100 transition-colors duration-500">
+<body class="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col antialiased">
 
-    <div class="bg-stone-800 text-white p-3 flex flex-wrap justify-between items-center text-xs gap-2 font-mono">
-        <span>🔧 PERFIL ACTIVO (Simulación):</span>
-        <div class="flex gap-2">
-            <button onclick="cambiarPerfil('hija_6')" class="bg-amber-500 px-3 py-1 rounded hover:bg-amber-600 font-bold text-stone-900">👧 Nena 6 años</button>
-            <button onclick="cambiarPerfil('hija_8')" class="bg-amber-500 px-3 py-1 rounded hover:bg-amber-600 font-bold text-stone-900">👧 Nena 8 años</button>
-            <button onclick="cambiarPerfil('esposa')" class="bg-indigo-600 px-3 py-1 rounded hover:bg-indigo-700 font-bold">👩 Mamá (B1)</button>
-            <button onclick="cambiarPerfil('papa')" class="bg-indigo-600 px-3 py-1 rounded hover:bg-indigo-700 font-bold">👨 Papá (B2)</button>
+    <!-- BARRA DE LOGEO/CONTROL (MODERNA Y DISCRETA) -->
+    <div class="bg-slate-900 text-slate-400 border-b border-slate-800 px-4 py-2.5 flex flex-wrap justify-between items-center text-xs gap-3">
+        <div class="flex items-center gap-2 font-medium tracking-tight text-slate-300">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>SIMULADOR DE ENTORNO ADAPTATIVO:</span>
+        </div>
+        <div class="flex gap-1.5">
+            <button onclick="cambiarPerfil('hija_6')" class="bg-slate-800 hover:bg-slate-700 text-amber-400 font-semibold px-3 py-1.5 rounded-lg transition-colors border border-slate-700">👧 Nena 6a</button>
+            <button onclick="cambiarPerfil('hija_8')" class="bg-slate-800 hover:bg-slate-700 text-orange-400 font-semibold px-3 py-1.5 rounded-lg transition-colors border border-slate-700">👧 Nena 8a</button>
+            <button onclick="cambiarPerfil('esposa')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors shadow-sm">👩 Mamá</button>
+            <button onclick="cambiarPerfil('papa')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors shadow-sm">👨 Papá</button>
         </div>
     </div>
 
-    <div id="vista-infantil" class="min-h-screen bg-orange-50 text-stone-800 p-4 md:p-8 flex flex-col justify-between hidden font-kids">
-        <header class="max-w-3xl mx-auto w-full border-b-2 border-stone-300 pb-4 flex justify-between items-center">
-            <div>
-                <span class="text-sm uppercase tracking-widest text-amber-700 font-bold">Cuaderno de Bitácora</span>
-                <h1 id="saludo-nena" class="text-3xl font-serif-elegant text-stone-900 mt-1">¡Hola!</h1>
-            </div>
-            <div class="flex gap-4 items-center bg-white p-3 rounded-2xl shadow-sm border border-stone-200">
-                <div class="text-center">
-                    <p class="text-[10px] text-stone-400 font-bold">🔥 RACHA</p>
-                    <p class="text-xl font-bold text-orange-600">5 Días</p>
+    <!-- ==================================================== -->
+    <!-- INTERFAZ INFANTIL (Estilo Moderno, Limpio y Amigable)-->
+    <!-- ==================================================== -->
+    <div id="vista-infantil" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-gradient-to-b from-indigo-50/40 via-white to-white">
+        
+        <header class="max-w-4xl mx-auto w-full flex justify-between items-center bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-soft border border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-indigo-500 flex items-center justify-center text-xl shadow-sm text-white">✨</div>
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600">Misión de Aprendizaje</span>
+                    <h1 id="saludo-nena" class="text-xl font-bold text-slate-800 tracking-tight">¡Hola!</h1>
                 </div>
-                <div class="h-8 w-px bg-stone-200"></div>
-                <div class="text-center">
-                    <p class="text-[10px] text-stone-400 font-bold">✨ PUNTOS</p>
-                    <p id="puntos-nena" class="text-xl font-bold text-amber-600">350 XP</p>
+            </div>
+            
+            <!-- Bloque de Stats Simplificado -->
+            <div class="flex gap-5 items-center">
+                <div class="text-right">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Progreso</p>
+                    <p class="text-sm font-extrabold text-orange-600 flex items-center gap-1">🔥 5 días</p>
+                </div>
+                <div class="h-8 w-px bg-slate-200"></div>
+                <div class="text-right">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Puntaje</p>
+                    <p id="puntos-nena" class="text-sm font-extrabold text-indigo-600">350 XP</p>
                 </div>
             </div>
         </header>
 
-        <main class="my-auto py-6 max-w-xl mx-auto w-full">
-            <div class="bg-white border-2 border-stone-300 rounded-3xl p-6 md:p-8 shadow-sm relative">
-                <div class="absolute -top-3.5 left-8 bg-amber-300 text-amber-950 text-xs font-bold px-4 py-1 rounded-full border border-amber-400 uppercase tracking-wider">
-                    Misión en Curso
-                </div>
-
-                <div id="bloque-6anos" class="hidden text-center space-y-6 mt-4">
-                    <h2 class="text-2xl text-stone-900">Misión: Los colores de las prendas</h2>
-                    <p class="text-stone-600 text-lg">Escuchá el audio gratis nativo del navegador:</p>
+        <main class="my-auto max-w-xl mx-auto w-full py-8">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100 relative">
+                
+                <!-- 6 AÑOS: Interfaz basada en gestos y audios limpios -->
+                <div id="bloque-6anos" class="hidden text-center space-y-6">
+                    <div class="space-y-1">
+                        <h2 class="text-2xl font-bold tracking-tight text-slate-800">Misión Interactiva</h2>
+                        <p class="text-slate-500 text-sm">Escuchá con atención y seleccioná la opción correcta</p>
+                    </div>
                     
-                    <button onclick="hablarNativo('Touch the red object')" class="mx-auto flex items-center gap-3 bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-2xl shadow-md transition-all transform hover:scale-105 text-lg">
-                        <span>🔊</span> ESCUCHAR CONSIGNAS
+                    <button onclick="hablarNativo('Touch the red color')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-4 px-6 rounded-2xl shadow-sm transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 text-base">
+                        <span>🔊</span> Escuchar instrucción de voz
                     </button>
 
                     <div class="grid grid-cols-2 gap-4 pt-4">
-                        <button onclick="responderNena(true)" class="bg-red-500 h-28 rounded-2xl border-4 border-white shadow-md active:scale-95 transition-all"></button>
-                        <button onclick="responderNena(false)" class="bg-blue-500 h-28 rounded-2xl border-4 border-white shadow-md active:scale-95 transition-all"></button>
+                        <button onclick="responderNena(true)" class="bg-rose-500 h-32 rounded-2xl shadow-soft hover:scale-[1.02] active:scale-[0.98] transition-all border border-rose-600/20"></button>
+                        <button onclick="responderNena(false)" class="bg-sky-500 h-32 rounded-2xl shadow-soft hover:scale-[1.02] active:scale-[0.98] transition-all border border-sky-600/20"></button>
                     </div>
                 </div>
 
-                <div id="bloque-8anos" class="hidden space-y-6 mt-4">
-                    <h2 class="text-2xl text-stone-900 text-center">Misión: Cuentas de equipaje</h2>
-                    <p class="text-stone-600 text-center text-lg">Resolvé el desafío matemático:</p>
-                    <div class="bg-stone-50 p-6 rounded-2xl border-2 border-dashed border-stone-200 text-center text-3xl font-bold">
-                        3 + 2 = <span class="text-amber-600">?</span>
+                <!-- 8 AÑOS: Desafío de primaria estructurado -->
+                <div id="bloque-8anos" class="hidden space-y-6">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-2xl font-bold tracking-tight text-slate-800">Desafío de Lógica</h2>
+                        <p class="text-slate-500 text-sm">Resolvé la operación matemática de primaria</p>
                     </div>
+                    
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100 text-center text-4xl font-extrabold text-slate-800 tracking-tight">
+                        3 + 2 = <span class="text-indigo-600">?</span>
+                    </div>
+
+                    <p class="text-slate-400 text-center text-xs font-medium">¿Cómo se escribe el resultado en inglés?</p>
+
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <button onclick="responderNena(false)" class="bg-stone-50 hover:bg-amber-100 border-2 border-stone-200 py-4 rounded-xl font-bold">Four (4)</button>
-                        <button onclick="responderNena(true)" class="bg-stone-50 hover:bg-amber-100 border-2 border-stone-200 py-4 rounded-xl font-bold">Five (5)</button>
-                        <button onclick="responderNena(false)" class="bg-stone-50 hover:bg-amber-100 border-2 border-stone-200 py-4 rounded-xl font-bold">Six (6)</button>
+                        <button onclick="responderNena(false)" class="bg-white hover:bg-slate-50 border border-slate-200 py-3.5 px-4 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors">Four (4)</button>
+                        <button onclick="responderNena(true)" class="bg-white hover:bg-slate-50 border border-slate-200 py-3.5 px-4 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors">Five (5)</button>
+                        <button onclick="responderNena(false)" class="bg-white hover:bg-slate-50 border border-slate-200 py-3.5 px-4 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors">Six (6)</button>
                     </div>
                 </div>
 
-                <div id="feedback-nena" class="hidden mt-4 p-3 rounded-xl text-center font-bold"></div>
+                <!-- Feedback dinámico integrado elegantemente -->
+                <div id="feedback-nena" class="hidden mt-6 p-4 rounded-xl text-center text-sm font-semibold border transition-all"></div>
             </div>
         </main>
-        <footer class="text-center text-xs text-stone-400 font-semibold">Bitácora Familiar Interior</footer>
+
+        <footer class="text-center text-xs text-slate-400 font-medium">
+            Entorno de Desarrollo Privado • Sinergia Escolar Familiar
+        </footer>
     </div>
 
-    <div id="vista-adultos" class="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 flex flex-col justify-between hidden font-adults">
-        <header class="max-w-5xl mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-6 gap-4">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">Conversational AI Sandbox</h1>
-                <p id="subtitulo-adulto" class="text-xs text-slate-400 mt-1">Perfil Adulto</p>
+    <!-- ==================================================== -->
+    <!-- INTERFAZ ADULTOS (Clean Dashboard Profesional)       -->
+    <!-- ==================================================== -->
+    <div id="vista-adultos" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-[#0b0f19] text-slate-200">
+        
+        <header class="max-w-5xl mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800/80 pb-6 gap-4">
+            <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 text-[10px] font-bold rounded-md border border-indigo-500/20 uppercase tracking-wider">Sandbox Activo</span>
+                </div>
+                <h1 class="text-xl font-bold text-white tracking-tight">Conversational AI Environment</h1>
+                <p id="subtitulo-adulto" class="text-xs text-slate-400">Configuración de fluidez práctica</p>
                 
-                <div class="mt-3 flex gap-2 items-center">
-                    <input type="password" id="ds-key" placeholder="Pegá tu DeepSeek API Key acá" class="bg-slate-900 border border-slate-800 text-xs px-2 py-1 rounded w-48 text-slate-300 focus:outline-none focus:border-indigo-500">
-                    <button onclick="guardarKey()" class="bg-slate-800 hover:bg-slate-700 text-[10px] px-2 py-1 rounded font-bold uppercase tracking-wider">Guardar</button>
+                <!-- Credenciales locales seguras -->
+                <div class="pt-2 flex gap-2 items-center">
+                    <input type="password" id="ds-key" placeholder="DeepSeek API Key local" class="bg-slate-900 border border-slate-800 text-xs px-3 py-1.5 rounded-lg w-52 text-slate-300 focus:outline-none focus:border-indigo-500 transition-colors">
+                    <button onclick="guardarKey()" class="bg-slate-800 hover:bg-slate-700 text-white text-[11px] px-3 py-1.5 rounded-lg font-medium transition-colors border border-slate-700">Guardar</button>
                 </div>
             </div>
             
-            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs w-full md:w-64">
-                <p class="font-bold text-indigo-400 mb-2 flex items-center gap-1.5">📊 Competencia Familiar</p>
-                <ol class="space-y-1.5 font-mono text-slate-300">
-                    <li class="flex justify-between items-center bg-slate-950/50 p-1 px-2 rounded"><span class="font-bold text-amber-400">1. Papá (B2)</span> <span id="rank-papa">450 XP</span></li>
-                    <li class="flex justify-between items-center p-1 px-2"><span>2. Nena (8a)</span> <span id="rank-hija8">420 XP</span></li>
-                    <li class="flex justify-between items-center p-1 px-2"><span>3. Mamá (B1)</span> <span id="rank-esposa">390 XP</span></li>
-                    <li class="flex justify-between items-center p-1 px-2"><span>4. Nena (6a)</span> <span id="rank-hija6">350 XP</span></li>
+            <!-- Leaderboard Tipo Dashboard Moderno -->
+            <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-xs w-full md:w-64 backdrop-blur-md shadow-xl">
+                <p class="font-bold text-slate-400 mb-2.5 flex items-center gap-1.5">
+                    <span class="h-1.5 w-1.5 rounded-full bg-indigo-400"></span> Ranking de Esfuerzo Semanal
+                </p>
+                <ol class="space-y-2 font-mono text-slate-400">
+                    <li class="flex justify-between items-center bg-slate-950/60 p-2 rounded border border-slate-800/50 text-slate-200 font-medium">
+                        <span>1. Papá (B2)</span> <span id="rank-papa" class="text-indigo-400 font-bold">450 XP</span>
+                    </li>
+                    <li class="flex justify-between items-center px-2"><span>2. Nena (8a)</span> <span id="rank-hija8">420 XP</span></li>
+                    <li class="flex justify-between items-center px-2"><span>3. Mamá (B1)</span> <span id="rank-esposa">390 XP</span></li>
+                    <li class="flex justify-between items-center px-2"><span>4. Nena (6a)</span> <span id="rank-hija6">350 XP</span></li>
                 </ol>
             </div>
         </header>
 
-        <main class="my-auto max-w-2xl mx-auto w-full py-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
-                <span class="text-xs font-bold text-indigo-400 tracking-widest uppercase">Inmersión Situacional</span>
-                <h2 id="escenario-titulo" class="text-xl font-semibold mt-1 mb-4">Escenario</h2>
+        <!-- Sandbox Conversacional Fluido -->
+        <main class="my-auto max-w-2xl mx-auto w-full py-6">
+            <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-6 md:p-8 shadow-premium backdrop-blur-sm">
+                <h2 id="escenario-titulo" class="text-base font-semibold text-white tracking-tight mb-4">Escenario</h2>
                 
-                <div class="bg-slate-950 rounded-xl p-4 min-h-[140px] border border-slate-800 text-sm space-y-4 mb-4 font-mono">
+                <!-- Consola limpia de conversación -->
+                <div class="bg-slate-950 rounded-xl p-5 min-h-[160px] border border-slate-800/60 text-sm space-y-4 mb-5 font-mono leading-relaxed">
                     <div id="chat-prompt" class="text-indigo-400"></div>
-                    <div id="user-transcript" class="text-emerald-400 hidden"></div>
-                    <div id="ai-evaluation" class="text-slate-400 border-t border-slate-800 pt-3 text-xs hidden"></div>
+                    <div id="user-transcript" class="text-emerald-400 pl-3 border-l border-emerald-500/30 hidden"></div>
+                    <div id="ai-evaluation" class="text-slate-300 border-t border-slate-800 pt-4 text-xs hidden space-y-2"></div>
                 </div>
 
-                <div class="flex flex-col items-center justify-center py-6 bg-slate-950 rounded-xl border border-dashed border-slate-800 gap-2">
-                    <button onclick="ejecutarLlamadaDeepSeek()" class="h-14 w-14 bg-indigo-600 hover:bg-indigo-500 rounded-full flex items-center justify-center shadow-lg text-xl active:scale-95 transition-transform">🎙️</button>
-                    <p class="text-xs text-slate-400">Simular respuesta hablada y procesar con DeepSeek</p>
+                <!-- Botón de Acción Estilo Moderno -->
+                <div class="flex flex-col items-center justify-center py-6 bg-slate-950/50 rounded-xl border border-dashed border-slate-800/80 gap-3">
+                    <button onclick="ejecutarLlamadaDeepSeek()" class="h-14 w-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-indigo-600/10 shadow-lg active:scale-95 transition-all text-xl border border-indigo-500/30">
+                        🎙️
+                    </button>
+                    <p class="text-xs text-slate-400 font-medium tracking-tight">Hacé clic para enviar tu respuesta simulada por voz</p>
                 </div>
             </div>
         </main>
-        <footer class="text-center text-xs text-slate-600">Entorno Ágil Anti-Libros Tradicionales</footer>
+
+        <footer class="text-center text-[11px] text-slate-600 font-medium">
+            Entorno de Inmersión Práctica Directa • Cero Estructuras Rígidas
+        </footer>
     </div>
 
+    <!-- ==================================================== -->
+    <!-- LOGICA SCRIPT INTERNA                                -->
+    <!-- ==================================================== -->
     <script>
         let perfilActual = 'hija_6';
         let scores = { papa: 450, hija_8: 420, esposa: 390, hija_6: 350 };
 
-        // Datos para inyectar en las simulaciones de adultos
         const escenarios = {
             esposa: {
                 titulo: "Escenario: En el mostrador del comercio",
@@ -145,7 +203,6 @@
             }
         };
 
-        // Cargar Key guardada en el navegador si existe
         window.onload = function() {
             if(localStorage.getItem('ds_api_key')) {
                 document.getElementById('ds-key').value = localStorage.getItem('ds_api_key');
@@ -189,39 +246,35 @@
             actualizarLeaderboardUI();
         }
 
-        // TEXT-TO-SPEECH GRATIS DEL NAVEGADOR (Para la de 6 años)
         function hablarNativo(texto) {
             if ('speechSynthesis' in window) {
                 let utterance = new SpeechSynthesisUtterance(texto);
                 utterance.lang = 'en-US';
-                utterance.rate = 0.8; // Más lento para que entienda bien
+                utterance.rate = 0.8;
                 window.speechSynthesis.speak(utterance);
-            } else {
-                alert("Tu navegador no soporta audio nativo. Texto: " + texto);
             }
         }
 
         function responderNena(esCorrecto) {
             const f = document.getElementById('feedback-nena');
-            f.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            f.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-200', 'bg-rose-50', 'text-rose-700', 'border-rose-200');
             if (esCorrecto) {
-                f.innerText = "¡Excelente! Misión cumplida. Subiste en la tabla familiar.";
-                f.classList.add('bg-green-100', 'text-green-800');
-                if (perfilActual === 'hija_6') scores.hija_6 += 45; // Ilusión inflada
+                f.innerText = "✨ ¡Excelente trabajo! Avanzaste en la misión familiar.";
+                f.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
+                if (perfilActual === 'hija_6') scores.hija_6 += 45;
                 if (perfilActual === 'hija_8') scores.hija_8 += 40;
                 document.getElementById('puntos-nena').innerText = (perfilActual === 'hija_6' ? scores.hija_6 : scores.hija_8) + " XP";
             } else {
-                f.innerText = "¡Buen intento! Escuchá de nuevo e intentalo otra vez.";
-                f.classList.add('bg-red-100', 'text-red-800');
+                f.innerText = "🔍 ¡Buen intento! Escuchá de nuevo e intentalo otra vez.";
+                f.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
             }
             actualizarLeaderboardUI();
         }
 
-        // CONEXIÓN DIRECTA Y EFICIENTE A DEEPSEEK (Para adultos)
         async function ejecutarLlamadaDeepSeek() {
             const apiKey = localStorage.getItem('ds_api_key');
             if(!apiKey) {
-                alert("Por favor, ingresá y guardá tu DeepSeek API Key primero para poder interactuar.");
+                alert("Ingresá tu API Key primero.");
                 return;
             }
 
@@ -230,11 +283,10 @@
             document.getElementById('user-transcript').classList.remove('hidden');
 
             const evalDiv = document.getElementById('ai-evaluation');
-            evalDiv.innerHTML = "Procesando respuesta en DeepSeek de forma eficiente...";
+            evalDiv.innerHTML = "<span class='text-slate-500 animate-pulse'>DeepSeek analizando contexto de forma eficiente...</span>";
             evalDiv.classList.remove('hidden');
 
             try {
-                // LLAMADA DIRECTA DESDE EL CLIENTE (Ahorrando backend)
                 const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
                     method: "POST",
                     headers: {
@@ -256,8 +308,8 @@
 
                 evalDiv.innerHTML = `
                     <p class="text-indigo-400"><strong>[IA]:</strong> "${resJson.reply}"</p>
-                    <p class="text-amber-400 mt-2"><strong>Corrección:</strong> ${resJson.correction || '¡Perfecto!'}</p>
-                    <p class="text-emerald-400 font-bold mt-1">✨ +${resJson.xp} XP Sumados</p>
+                    <p class="text-amber-400/90 mt-2"><strong>Corrección:</strong> ${resJson.correction || '¡Perfecto!'}</p>
+                    <p class="text-emerald-400 font-bold mt-1">✨ Puntos asignados: +${resJson.xp} XP</p>
                 `;
 
                 if (perfilActual === 'esposa') scores.esposa += resJson.xp;
@@ -265,7 +317,7 @@
                 actualizarLeaderboardUI();
 
             } catch (error) {
-                evalDiv.innerHTML = "<span class='text-red-400'>Error de conexión con la API o Key inválida. Revisá los datos.</span>";
+                evalDiv.innerHTML = "<span class='text-rose-400/90 font-medium'>Error de autenticación o límites en la API.</span>";
                 console.error(error);
             }
         }
