@@ -6,7 +6,7 @@
     <title>Sinergia Familiar - Language Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
     <script>
@@ -159,12 +159,23 @@
             </div>
         </header>
 
-        <main class="my-auto max-w-4xl mx-auto w-full py-6">
-            <!-- 1. SELECTOR DE ESCENARIOS ADULTOS -->
-            <div id="panel-escenarios-adultos" class="mb-8 space-y-4">
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Select Practical Immersion Scenario</h3>
-                <div id="grid-escenarios-adultos" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <!-- Injected via JS -->
+        <main class="max-w-4xl mx-auto w-full py-6 space-y-6">
+            <!-- 1. SELECTOR DE ESCENARIOS Y ENTRADA PERSONALIZADA -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-soft space-y-4">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">1. Choose a Quick Scenario</h3>
+                    <div id="grid-escenarios-adultos" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                </div>
+                
+                <!-- GENERADOR DINÁMICO DE TEMAS -->
+                <div class="border-t border-slate-100 pt-4">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">2. Or Request a Custom Topic (DeepSeek Driven)</h3>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="custom-topic-input" placeholder="Example: Asking for a medical appointment / Corporate finance debate..." class="flex-1 bg-slate-50 border border-slate-200 text-xs px-3 py-2.5 rounded-xl text-slate-700 font-medium focus:outline-none focus:border-indigo-500">
+                        <button onclick="generarEscenarioPersonalizadoAI()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm">
+                            ✨ Generate Scenario with AI
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -207,7 +218,9 @@
 
         let perfilActualId = 'perfil1';
         let voiceIndexSeleccionada = 0;
-        let escenarioAdultoSeleccionado = 'shop';
+        
+        // Estado dinámico para guardar el escenario cargado por la IA o los fijos
+        let escenarioAdultoActivo = { titulo: "", prompt: "", mockInput: "", systemInfo: "" };
 
         const tematicasInfantiles = {
             animals: { label: "🦁 Animals Quest", pregunta: "Listen and find the LION!", audioText: "Listen closely: find the lion!", tipoUI: "botones_grandes", opciones: [{ texto: "Lion", correcta: true, estilo: "bg-amber-500" }, { texto: "Monkey", correcta: false, estilo: "bg-orange-400" }] },
@@ -216,12 +229,11 @@
             games: { label: "🎮 Games & Toys", pregunta: "Count the toys: 3 blocks + 3 blocks", audioText: "Three blocks plus three blocks. What is the total?", tipoUI: "matematica", opciones: [{ texto: "Five", correcta: false }, { texto: "Six", correcta: true }, { texto: "Seven", correcta: false }] }
         };
 
-        // BANCO DE ESCENARIOS AMPLIADO PARA ADULTOS
-        const bancoEscenariosAdultos = {
+        const bancoEscenariosFijos = {
             shop: { id: 'shop', titulo: "🛒 Local Shop Counter", prompt: "Hello! Can I help you find a specific size or color for this item?", mockInput: "Yes please, I need this jacket in medium size." },
             strategy: { id: 'strategy', titulo: "📊 Strategy & Logistics Briefing", prompt: "We need to optimize our transport options due to volatility. What is your advice on our baseline strategy?", mockInput: "We should adopt a highly conservative approach due to market volatility before expanding operations." },
             cafe: { id: 'cafe', titulo: "☕ Ordering at a Café", prompt: "Welcome! What can I get started for you today? We have fresh croissants ready.", mockInput: "Hello, I would like a large black coffee and one hot croissant, please." },
-            directions: { id: 'directions', titulo: "🗺️ Asking for Directions", prompt: "Excuse me, I am a bit lost. Do you know where the main subway station is located around here?", mockInput: "Yes, walk straight down this street for two blocks, then turn left. You will see it." }
+            directions: { id: 'directions', titulo: "🗺️ Asking for Directions", prompt: "Excuse me, I am a bit lost. Do you know where the main subway station is located?", mockInput: "Yes, walk straight down this street for two blocks, then turn left." }
         };
 
         window.onload = function() {
@@ -306,12 +318,12 @@
         function renderizarSelectorEscenariosAdultos() {
             const container = document.getElementById('grid-escenarios-adultos');
             container.innerHTML = '';
-            Object.values(bancoEscenariosAdultos).forEach(e => {
+            Object.values(bancoEscenariosFijos).forEach(e => {
                 let btn = document.createElement('button');
                 btn.id = `btn-esc-${e.id}`;
-                btn.className = "bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 p-3 rounded-xl font-bold text-xs shadow-sm transition-all text-center";
+                btn.className = "bg-slate-50 hover:bg-slate-100 text-slate-800 border border-slate-200/80 p-3 rounded-xl font-bold text-xs shadow-sm transition-all text-center";
                 btn.innerText = e.titulo;
-                btn.onclick = () => seleccionarEscenarioAdulto(e.id);
+                btn.onclick = () => cargarEscenarioFijoAdulto(e.id);
                 container.appendChild(btn);
             });
         }
@@ -331,7 +343,7 @@
         function toggleConfigPanel() { document.getElementById('config-panel').classList.toggle('hidden'); }
         function guardarKey() { localStorage.setItem('ds_api_key', document.getElementById('ds-key').value); alert("Key linked."); }
 
-        // INTERFAZ INFANTIL INTERACTIVA (Escucha y repite)
+        // MANEJO DE TEMÁTICAS INFANTILES
         function seleccionarTematica(idTema) {
             const tema = tematicasInfantiles[idTema];
             if (!tema) return;
@@ -346,39 +358,24 @@
             contenedor.innerHTML = '';
             document.getElementById('feedback-nena').classList.add('hidden');
 
-            if (tema.tipoUI === 'botones_grandes') {
-                let grid = document.createElement('div');
-                grid.className = "grid grid-cols-2 gap-4";
-                tema.opciones.forEach(opt => {
-                    let btn = document.createElement('button');
-                    btn.className = `${opt.estilo} h-32 rounded-2xl shadow-soft hover:scale-[1.01] transition-transform text-white font-extrabold text-lg border border-black/10 flex flex-col justify-center items-center gap-1`;
-                    btn.innerHTML = `<span>${opt.texto}</span><span class="text-[10px] text-white/80 tracking-wide font-normal">🗣️ Listen & Learn</span>`;
-                    
-                    // ESCUCHA Y MEJORA: HABLA LA OPCIÓN AL CLICKEAR ANTES DE EVALUAR
-                    btn.onclick = () => {
-                        hablarNativo(opt.texto);
-                        setTimeout(() => { evaluarRespuestaInfantil(opt.correcta, tema.audioText); }, 1000);
-                    };
-                    grid.appendChild(btn);
-                });
-                contenedor.appendChild(grid);
-            } else {
-                let flex = document.createElement('div');
-                flex.className = "grid grid-cols-1 sm:grid-cols-3 gap-3";
-                tema.opciones.forEach(opt => {
-                    let btn = document.createElement('button');
-                    btn.className = "bg-white hover:bg-slate-50 border border-slate-200 py-4 px-4 rounded-xl font-bold text-slate-700 text-sm shadow-sm transition-colors flex flex-col items-center gap-0.5";
-                    btn.innerHTML = `<span>${opt.texto}</span><span class="text-[9px] text-slate-400 font-normal">🗣️ Listen</span>`;
-                    
-                    // ESCUCHA Y MEJORA EN FORMATO MATEMÁTICA
-                    btn.onclick = () => {
-                        hablarNativo(opt.texto);
-                        setTimeout(() => { evaluarRespuestaInfantil(opt.correcta, tema.audioText); }, 1000);
-                    };
-                    flex.appendChild(btn);
-                });
-                contenedor.appendChild(flex);
-            }
+            let layoutGrid = tema.tipoUI === 'botones_grandes';
+            let wrapper = document.createElement('div');
+            wrapper.className = layoutGrid ? "grid grid-cols-2 gap-4" : "grid grid-cols-1 sm:grid-cols-3 gap-3";
+
+            tema.opciones.forEach(opt => {
+                let btn = document.createElement('button');
+                btn.className = layoutGrid 
+                    ? `${opt.estilo} h-32 rounded-2xl shadow-soft text-white font-extrabold text-lg border border-black/10 flex flex-col justify-center items-center gap-1`
+                    : "bg-white hover:bg-slate-50 border border-slate-200 py-4 px-4 rounded-xl font-bold text-slate-700 text-sm shadow-sm flex flex-col items-center gap-0.5";
+                btn.innerHTML = `<span>${opt.texto}</span><span class="${layoutGrid ? 'text-white/80 text-[10px]' : 'text-slate-400 text-[9px]'} font-normal">🗣️ Listen</span>`;
+                
+                btn.onclick = () => {
+                    hablarNativo(opt.texto);
+                    setTimeout(() => { evaluarRespuestaInfantil(opt.correcta, tema.audioText); }, 1000);
+                };
+                wrapper.appendChild(btn);
+            });
+            contenedor.appendChild(wrapper);
             setTimeout(() => { hablarNativo(tema.audioText); }, 200);
         }
 
@@ -408,27 +405,83 @@
             actualizarLeaderboardUI();
         }
 
-        // CONTROL DE ESCENARIOS DE ADULTOS
-        function seleccionarEscenarioAdulto(idEsc) {
-            escenarioAdultoSeleccionado = idEsc;
-            const p = familia[perfilActualId];
-            const esc = bancoEscenariosAdultos[idEsc];
-
-            // Resaltar botón seleccionado
-            Object.values(bancoEscenariosAdultos).forEach(e => {
+        // CARGA DE ESCENARIOS FIJOS
+        function cargarEscenarioFijoAdulto(idEsc) {
+            const esc = bancoEscenariosFijos[idEsc];
+            Object.values(bancoEscenariosFijos).forEach(e => {
                 document.getElementById(`btn-esc-${e.id}`).classList.remove('border-indigo-500', 'bg-indigo-50/50', 'text-indigo-600');
             });
             document.getElementById(`btn-esc-${idEsc}`).classList.add('border-indigo-500', 'bg-indigo-50/50', 'text-indigo-600');
 
-            // Cargar datos en la consola
+            // Setear el objeto activo global
+            escenarioAdultoActivo = {
+                titulo: esc.titulo,
+                prompt: esc.prompt,
+                mockInput: esc.mockInput,
+                systemInfo: "Act as a native speaker in this context."
+            };
+
+            desplegarConsolaConversacional();
+        }
+
+        // GENERADOR DE ESCENARIOS A PEDIDO CON DEEPSEEK (REALITY TRIGGER)
+        async function generarEscenarioPersonalizadoAI() {
+            const apiKey = localStorage.getItem('ds_api_key');
+            const topicInput = document.getElementById('custom-topic-input').value.trim();
+            
+            if(!apiKey) { alert("Please open Admin Config and save your DeepSeek API Key first."); return; }
+            if(!topicInput) { alert("Please type a topic you want to practice first."); return; }
+
+            const p = familia[perfilActualId];
             document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
-            document.getElementById('escenario-titulo').innerText = esc.titulo;
-            document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${esc.prompt}"`;
+            document.getElementById('escenario-titulo').innerText = `✨ Generating: ${topicInput}...`;
+            document.getElementById('chat-prompt').innerHTML = "<span class='text-slate-400 animate-pulse'>DeepSeek is building a custom scenario for you...</span>";
+
+            try {
+                const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [
+                            { role: "system", content: "You are a scenario designer for English learning. Create an opening line for a practical immersion conversation based on the topic provided. Respond STRICTLY with a raw JSON object with two fields: 'setup_title' (A short title for the scene) and 'ai_opening' (the opening question or sentence the character says to start the conversation, max 2 sentences). Do not include markdown or backticks." },
+                            { role: "user", content: `Create a scenario about: ${topicInput}. Target English level: ${p.nivel}` }
+                        ],
+                        response_format: { type: "json_object" }
+                    })
+                });
+
+                const data = await response.json();
+                const resJson = JSON.parse(data.choices[0].message.content);
+
+                // Re-escribir el objeto activo global con lo que devolvió la IA
+                escenarioAdultoActivo = {
+                    titulo: `✨ AI Custom: ${resJson.setup_title}`,
+                    prompt: resJson.ai_opening,
+                    mockInput: "I understand the context and I am ready to participate in this scenario.", // Frase genérica para el prototipo
+                    systemInfo: `Act strictly within the context of ${resJson.setup_title}.`
+                };
+
+                desplegarConsolaConversacional();
+                document.getElementById('custom-topic-input').value = ''; // Limpiar input
+
+            } catch (error) {
+                document.getElementById('chat-prompt').innerHTML = "<span class='text-rose-500'>Failed to compile custom scenario. Check your API Key.</span>";
+                console.error(error);
+            }
+        }
+
+        function desplegarConsolaConversacional() {
+            document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
+            document.getElementById('escenario-titulo').innerText = escenarioAdultoActivo.titulo;
+            document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${escenarioAdultoActivo.prompt}"`;
             document.getElementById('user-transcript').classList.add('hidden');
             document.getElementById('ai-evaluation').classList.add('hidden');
-
-            // Hablar de forma automática
-            setTimeout(() => { hablarNativo(esc.prompt); }, 200);
+            
+            setTimeout(() => { hablarNativo(escenarioAdultoActivo.prompt); }, 200);
         }
 
         function cambiarPerfil(id) {
@@ -449,29 +502,26 @@
             } else {
                 document.getElementById('vista-adultos').classList.remove('hidden');
                 document.getElementById('subtitulo-adulto').innerText = `Active Explorer: ${p.nombre} — English Level: [${p.nivel}]`;
-                document.getElementById('zona-conversacion-adulto').add('hidden'); // Ocultar hasta elegir escenario
+                document.getElementById('zona-conversacion-adulto').classList.add('hidden');
                 
-                // Forzar selección del primer escenario por defecto al entrar
                 renderizarSelectorEscenariosAdultos();
-                seleccionarEscenarioAdulto('shop');
+                cargarEscenarioFijoAdulto('shop'); // Arranca con el talle de ropa por defecto
             }
             actualizarLeaderboardUI();
         }
 
         function escucharEscenarioActual() {
-            const esc = bancoEscenariosAdultos[escenarioAdultoSeleccionado];
-            if (esc) hablarNativo(esc.prompt);
+            if (escenarioAdultoActivo.prompt) hablarNativo(escenarioAdultoActivo.prompt);
         }
 
-        // DEEPSEEK CORE CONNECTOR
+        // DEEPSEEK CORE CONNECTOR FOR EVALUATION
         async function ejecutarLlamadaDeepSeek() {
             const apiKey = localStorage.getItem('ds_api_key');
             if(!apiKey) { alert("Please open Admin Config and save your DeepSeek API Key."); return; }
 
             const p = familia[perfilActualId];
-            const esc = bancoEscenariosAdultos[escenarioAdultoSeleccionado];
             
-            document.getElementById('user-transcript').innerHTML = `<strong>[Your Voice Input]:</strong> "${esc.mockInput}"`;
+            document.getElementById('user-transcript').innerHTML = `<strong>[Your Voice Input]:</strong> "${escenarioAdultoActivo.mockInput}"`;
             document.getElementById('user-transcript').classList.remove('hidden');
 
             const evalDiv = document.getElementById('ai-evaluation');
@@ -490,8 +540,8 @@
                     body: JSON.stringify({
                         model: "deepseek-chat",
                         messages: [
-                            { role: "system", content: `You are an immersive language platform tutor. Everything in English. Context level: ${p.nivel}. ${strictness}. Respond STRICTLY with a raw JSON object string with fields: "reply" (string), "correction" (string in English), and "xp" (number). Do not include markdown formatting or backticks.` },
-                            { role: "user", content: `Context prompt: ${esc.prompt}. User answered: ${esc.mockInput}` }
+                            { role: "system", content: `You are an immersive language platform tutor. Everything in English. Context level: ${p.nivel}. ${strictness}. ${escenarioAdultoActivo.systemInfo} Respond STRICTLY with a raw JSON object string with fields: "reply" (string), "correction" (string in English), and "xp" (number). Do not include markdown formatting or backticks.` },
+                            { role: "user", content: `Context prompt: ${escenarioAdultoActivo.prompt}. User answered: ${escenarioAdultoActivo.mockInput}` }
                         ],
                         response_format: { type: "json_object" }
                     })
