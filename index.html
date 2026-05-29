@@ -6,7 +6,7 @@
     <title>Sinergia Familiar - Language Hub PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
     <script>
@@ -25,6 +25,7 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col antialiased">
 
+    <!-- TOP PROFILE SELECTOR -->
     <div class="bg-slate-900 text-slate-400 border-b border-slate-800 px-4 py-3 flex flex-wrap justify-between items-center text-xs gap-3">
         <div class="flex items-center gap-2 font-medium text-slate-300">
             <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -38,6 +39,7 @@
         </div>
     </div>
 
+    <!-- CONFIGURATION PANEL -->
     <div id="config-panel" class="bg-white border-b border-slate-200 p-6 shadow-soft hidden">
         <div class="max-w-5xl mx-auto space-y-6">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -64,6 +66,7 @@
         </div>
     </div>
 
+    <!-- INTERFAZ INFANTIL -->
     <div id="vista-infantil" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-gradient-to-b from-indigo-50/40 via-white to-white">
         <header class="max-w-4xl mx-auto w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-soft border border-slate-100">
             <div class="flex items-center gap-3">
@@ -129,6 +132,7 @@
         </main>
     </div>
 
+    <!-- INTERFAZ ADULTOS -->
     <div id="vista-adultos" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-[#f8fafc]">
         <header class="max-w-5xl mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-soft border border-slate-100 gap-4">
             <div class="space-y-1">
@@ -156,6 +160,7 @@
                 <div id="grid-escenarios-adultos" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
             </div>
 
+            <!-- CONSOLA DE ENTRADA DE VOZ REAL -->
             <div id="zona-conversacion-adulto" class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100 space-y-6 hidden">
                 <div class="flex justify-between items-center border-b border-slate-100 pb-4">
                     <h2 id="escenario-titulo" class="text-base font-bold text-slate-800 tracking-tight">Contexto de la Conversación</h2>
@@ -170,8 +175,9 @@
                     <div id="ai-evaluation" class="text-slate-600 border-t border-slate-200 pt-4 text-xs hidden space-y-2"></div>
                 </div>
 
+                <!-- CONTROLADOR DEL MICRÓFONO FISICO -->
                 <div class="flex flex-col items-center justify-center py-6 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 gap-3">
-                    <button id="btn-mic-adulto" mousedown="iniciarGrabacionReal()" mouseup="detenerGrabacionReal()" onclick="alternarMic() " class="h-16 w-16 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all text-2xl relative">
+                    <button id="btn-mic-adulto" onclick="alternarMic()" class="h-16 w-16 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all text-2xl relative">
                         <span id="mic-icon">🎙️</span>
                         <span id="pulse-ring" class="absolute inset-0 rounded-full bg-red-500/30 animate-ping hidden"></span>
                     </button>
@@ -182,11 +188,11 @@
     </div>
 
     <script>
-        // Sistema de Persistencia Local Inteligente
+        // Sistema de Persistencia Local Inteligente - Nombre María Elena unificado de base
         let familia = JSON.parse(localStorage.getItem('sinergia_familia')) || {
             perfil1: { id: 'perfil1', nombre: 'Emilia 6a', tipo: 'infantil', subtipo: 'hija_6', nivel: 'Initial', score: 120, racha: 5, misionIndex: 0 },
             perfil2: { id: 'perfil2', nombre: 'Juliana 8a', tipo: 'infantil', subtipo: 'hija_8', nivel: 'Initial', score: 180, racha: 6, misionIndex: 0 },
-            perfil3: { id: 'perfil3', nombre: 'Mariela', tipo: 'adulto', subtipo: 'esposa', nivel: 'Intermediate', score: 210 },
+            perfil3: { id: 'perfil3', nombre: 'María Elena', tipo: 'adulto', subtipo: 'esposa', nivel: 'Intermediate', score: 210 },
             perfil4: { id: 'perfil4', nombre: 'Maxi', tipo: 'adulto', subtipo: 'papa', nivel: 'Upper-Intermediate', score: 250 }
         };
 
@@ -196,7 +202,6 @@
         let esGrabando = false;
         let reconocimientoVoz;
 
-        // Banco de misiones dinámicas y progresivas para las nenas
         const misionesProgresoInfantil = {
             animals: [
                 { pregunta: "Listen and find the LION!", audioText: "Listen closely: find the lion!", opciones: [{ texto: "Lion", correcta: true, estilo: "bg-amber-500" }, { texto: "Monkey", correcta: false, estilo: "bg-orange-400" }] },
@@ -272,7 +277,6 @@
             }
         }
 
-        // Configuración de Reconocimiento de Voz Físico
         function inicializarReconocimientoVoz() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (SpeechRecognition) {
@@ -337,7 +341,6 @@
         function seleccionarTematica(idTema) {
             const p = familia[perfilActualId];
             const listaMisiones = misionesProgresoInfantil[idTema];
-            // Control adaptativo de índice (Hándicap Progresivo)
             let idx = p.misionIndex % listaMisiones.length;
             const tema = listaMisiones[idx];
 
@@ -377,11 +380,11 @@
                 f.innerText = "✨ ¡Excelente! ¡Desafío completado con éxito!";
                 f.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
                 p.score += 50;
-                p.misionIndex += 1; // Avance real en la base de datos local
+                p.misionIndex += 1;
                 guardarEstado();
                 document.getElementById('puntos-nena').innerText = p.score + " XP";
                 setTimeout(() => { hablarNativo("Brilliant! Task completed!"); }, 100);
-                setTimeout(() => { seleccionarTematica(idTema); }, 1500); // Avanza automáticamente al siguiente nivel del mapa
+                setTimeout(() => { seleccionarTematica(idTema); }, 1500);
             } else {
                 f.innerText = "🔍 ¡Casi! Escuchemos de vuelta.";
                 f.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
@@ -416,7 +419,6 @@
 
         function escucharEscenarioActual() { hablarNativo(escenarioAdultoActivo.prompt); }
 
-        // LOGICA DE INTELIGENCIA DEEPSEEK SIN PASAR POR SERVIDORES EXTERNOS
         async function generarEscenarioSorpresaAI() {
             const apiKey = localStorage.getItem('ds_api_key');
             if(!apiKey) { alert("Abre 'Configuración Admin' y guarda tu API Key de DeepSeek."); return; }
