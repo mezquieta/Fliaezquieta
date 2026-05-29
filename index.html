@@ -25,6 +25,7 @@
 </head>
 <body class="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col antialiased">
 
+    <!-- TOP PROFILE SELECTOR -->
     <div class="bg-slate-900 text-slate-400 border-b border-slate-800 px-4 py-3 flex flex-wrap justify-between items-center text-xs gap-3">
         <div class="flex items-center gap-2 font-medium text-slate-300">
             <span class="h-2 w-2 rounded-full bg-indigo-400 animate-pulse"></span>
@@ -38,6 +39,7 @@
         </div>
     </div>
 
+    <!-- CONFIGURATION PANEL -->
     <div id="config-panel" class="bg-white border-b border-slate-200 p-6 shadow-soft hidden">
         <div class="max-w-5xl mx-auto space-y-6">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
@@ -66,6 +68,9 @@
         </div>
     </div>
 
+    <!-- ==================================================== -->
+    <!-- INTERFAZ INFANTIL                                    -->
+    <!-- ==================================================== -->
     <div id="vista-infantil" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-gradient-to-b from-indigo-50/40 via-white to-white">
         <header class="max-w-4xl mx-auto w-full flex justify-between items-center bg-white p-4 rounded-2xl shadow-soft border border-slate-100">
             <div class="flex items-center gap-3">
@@ -89,29 +94,29 @@
         </header>
 
         <main class="my-auto max-w-2xl mx-auto w-full py-6">
-            
+            <!-- SELECTOR DE TEMÁTICAS INFANTILES -->
             <div id="panel-tematicas" class="space-y-6">
                 <div class="text-center space-y-1">
                     <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Choose Your Adventure!</h2>
                     <p class="text-slate-500 text-sm">Select a theme to start learning and earning points</p>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <button onclick="seleccionarTematica('animals')" class="bg-white hover:bg-amber-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                    <button onclick="seleccionarTematica('animals')" class="bg-white hover:bg-amber-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all">
                         <div class="text-3xl">🦁</div>
                         <div class="font-bold text-slate-800 text-sm">Animals</div>
                         <div class="text-[11px] text-slate-400">Vocabulary & Sound Counting</div>
                     </button>
-                    <button onclick="seleccionarTematica('food')" class="bg-white hover:bg-emerald-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                    <button onclick="seleccionarTematica('food')" class="bg-white hover:bg-emerald-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all">
                         <div class="text-3xl">🍎</div>
                         <div class="font-bold text-slate-800 text-sm">Food & Fruits</div>
                         <div class="text-[11px] text-slate-400">Basic Math & Counting</div>
                     </button>
-                    <button onclick="seleccionarTematica('greetings')" class="bg-white hover:bg-indigo-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                    <button onclick="seleccionarTematica('greetings')" class="bg-white hover:bg-indigo-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all">
                         <div class="text-3xl">👋</div>
                         <div class="font-bold text-slate-800 text-sm">Greetings & Body</div>
                         <div class="text-[11px] text-slate-400">Basic Conversations</div>
                     </button>
-                    <button onclick="seleccionarTematica('games')" class="bg-white hover:bg-rose-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all transform hover:-translate-y-0.5">
+                    <button onclick="seleccionarTematica('games')" class="bg-white hover:bg-rose-50/50 p-5 rounded-2xl border border-slate-200/60 shadow-soft text-center space-y-2 transition-all">
                         <div class="text-3xl">🎮</div>
                         <div class="font-bold text-slate-800 text-sm">Games & Toys</div>
                         <div class="text-[11px] text-slate-400">Fun Names & Logic</div>
@@ -119,29 +124,29 @@
                 </div>
             </div>
 
+            <!-- CONTENEDOR DE LA MISIÓN INFANTIL ACTIVA -->
             <div id="zona-mision" class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100 hidden relative">
                 <button onclick="volverATematicas()" class="absolute top-4 right-4 text-xs text-slate-400 hover:text-slate-600">✕ Change Theme</button>
-                
                 <div class="space-y-6">
                     <div class="text-center space-y-1">
                         <h3 id="mision-categoria-titulo" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Category</h3>
                         <h2 id="mision-pregunta-texto" class="text-xl font-bold text-slate-800">Mission Question</h2>
                     </div>
-
                     <button id="btn-audio-infantil" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 text-base shadow-interface">
                         <span>🔊</span> Listen to Instruction
                     </button>
-
+                    <div class="text-center"><span class="px-3 py-1 bg-amber-50 text-amber-700 text-[11px] font-bold rounded-md border border-amber-100 uppercase tracking-wider">💡 Listen & Repeat Mode Active</span></div>
                     <div id="contenedor-respuestas" class="pt-2"></div>
-
                     <div id="feedback-nena" class="hidden p-4 rounded-xl text-center text-sm font-semibold border"></div>
                 </div>
             </div>
-
         </main>
         <footer class="text-center text-xs text-slate-400 font-medium">Family Shared Core Hub</footer>
     </div>
 
+    <!-- ==================================================== -->
+    <!-- INTERFAZ ADULTOS                                     -->
+    <!-- ==================================================== -->
     <div id="vista-adultos" class="flex-1 flex flex-col justify-between p-4 md:p-8 hidden bg-[#f8fafc]">
         <header class="max-w-5xl mx-auto w-full flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-soft border border-slate-100 gap-4">
             <div class="space-y-1">
@@ -154,19 +159,30 @@
             </div>
         </header>
 
-        <main class="my-auto max-w-2xl mx-auto w-full py-6">
-            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100 space-y-6">
+        <main class="my-auto max-w-4xl mx-auto w-full py-6">
+            <!-- 1. SELECTOR DE ESCENARIOS ADULTOS -->
+            <div id="panel-escenarios-adultos" class="mb-8 space-y-4">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Select Practical Immersion Scenario</h3>
+                <div id="grid-escenarios-adultos" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- 2. AREA CONVERSACIONAL CORE -->
+            <div id="zona-conversacion-adulto" class="bg-white rounded-3xl p-6 md:p-8 shadow-premium border border-slate-100 space-y-6 hidden">
                 <div class="flex justify-between items-center border-b border-slate-100 pb-4">
-                    <h2 id="escenario-titulo" class="text-base font-bold text-slate-800 tracking-tight">Scenario Configuration</h2>
+                    <h2 id="escenario-titulo" class="text-base font-bold text-slate-800 tracking-tight">Active Context</h2>
                     <button onclick="escucharEscenarioActual()" class="text-xs bg-indigo-50 text-indigo-600 hover:bg-indigo-100 font-semibold px-3 py-1.5 rounded-lg border border-indigo-100 flex items-center gap-1.5 transition-colors">
                         🔊 Listen to AI
                     </button>
                 </div>
+                
                 <div class="bg-slate-50 rounded-2xl p-5 min-h-[160px] border border-slate-200/60 text-sm space-y-4 font-medium leading-relaxed text-slate-700">
                     <div id="chat-prompt" class="text-indigo-600 font-semibold"></div>
                     <div id="user-transcript" class="text-emerald-600 pl-3 border-l-2 border-emerald-500/40 hidden italic"></div>
                     <div id="ai-evaluation" class="text-slate-600 border-t border-slate-200 pt-4 text-xs hidden space-y-2"></div>
                 </div>
+
                 <div class="flex flex-col items-center justify-center py-6 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 gap-3">
                     <button onclick="ejecutarLlamadaDeepSeek()" class="h-14 w-14 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-indigo-600/20 shadow-lg active:scale-95 transition-all text-xl">
                         🎙️
@@ -178,6 +194,9 @@
         <footer class="text-center text-[11px] text-slate-400 font-medium">Private Immersive Workspace</footer>
     </div>
 
+    <!-- ==================================================== -->
+    <!-- LOGICA SCRIPT AVANZADA                               -->
+    <!-- ==================================================== -->
     <script>
         let familia = {
             perfil1: { id: 'perfil1', nombre: 'Nena 6a', tipo: 'infantil', subtipo: 'hija_6', nivel: 'Initial', score: 350 },
@@ -188,57 +207,21 @@
 
         let perfilActualId = 'perfil1';
         let voiceIndexSeleccionada = 0;
+        let escenarioAdultoSeleccionado = 'shop';
 
-        // BANCO DE DATOS DE TEMÁTICAS PARA LAS NENAS (Simula Supabase de forma interactiva)
         const tematicasInfantiles = {
-            animals: {
-                label: "🦁 Animals Quest",
-                pregunta: "Listen and find the LION!",
-                audioText: "Listen closely: find the lion!",
-                tipoUI: "botones_grandes",
-                opciones: [
-                    { texto: "🦁 Lion", correcta: true, estilo: "bg-amber-500" },
-                    { texto: "🐵 Monkey", correcta: false, estilo: "bg-orange-400" }
-                ]
-            },
-            food: {
-                label: "🍎 Food & Fruits",
-                pregunta: "How many apples do you hear? (2 apples + 1 apple)",
-                audioText: "Two apples plus one apple. How many apples?",
-                tipoUI: "matematica",
-                opciones: [
-                    { texto: "Two (2)", correcta: false },
-                    { texto: "Three (3)", correcta: true },
-                    { texto: "Four (4)", correcta: false }
-                ]
-            },
-            greetings: {
-                label: "👋 Greetings & Conversations",
-                pregunta: "How do you say 'Hola' in English?",
-                audioText: "How do you say hola in English?",
-                tipoUI: "matematica", // Estilo lista limpia
-                opciones: [
-                    { texto: "Goodbye", correcta: false },
-                    { texto: "Thank you", correcta: false },
-                    { texto: "Hello", correcta: true }
-                ]
-            },
-            games: {
-                label: "🎮 Games & Toys",
-                pregunta: "Count the toys: 3 blocks + 3 blocks",
-                audioText: "Three blocks plus three blocks. What is the total?",
-                tipoUI: "matematica",
-                opciones: [
-                    { texto: "Five (5)", correcta: false },
-                    { texto: "Six (6)", correcta: true },
-                    { texto: "Seven (7)", correcta: false }
-                ]
-            }
+            animals: { label: "🦁 Animals Quest", pregunta: "Listen and find the LION!", audioText: "Listen closely: find the lion!", tipoUI: "botones_grandes", opciones: [{ texto: "Lion", correcta: true, estilo: "bg-amber-500" }, { texto: "Monkey", correcta: false, estilo: "bg-orange-400" }] },
+            food: { label: "🍎 Food & Fruits", pregunta: "How many apples do you hear? (2 apples + 1 apple)", audioText: "Two apples plus one apple. How many apples?", tipoUI: "matematica", opciones: [{ texto: "Two", correcta: false }, { texto: "Three", correcta: true }, { texto: "Four", correcta: false }] },
+            greetings: { label: "👋 Greetings & Conversations", pregunta: "How do you say 'Hola' in English?", audioText: "How do you say hola in English?", tipoUI: "matematica", opciones: [{ texto: "Goodbye", correcta: false }, { texto: "Thank you", correcta: false }, { texto: "Hello", correcta: true }] },
+            games: { label: "🎮 Games & Toys", pregunta: "Count the toys: 3 blocks + 3 blocks", audioText: "Three blocks plus three blocks. What is the total?", tipoUI: "matematica", opciones: [{ texto: "Five", correcta: false }, { texto: "Six", correcta: true }, { texto: "Seven", correcta: false }] }
         };
 
-        const escenariosAdultos = {
-            esposa: { titulo: "Scenario: Local Shop Counter", prompt: "Hello! Can I help you find a specific size or color for this item?", mockInput: "Yes please, I need this jacket in medium size.", systemInfo: "Act as a store clerk. Give a short reply, a tiny correction in English, and assign scores between 35 and 48 XP." },
-            papa: { titulo: "Scenario: Strategy & Logistics Briefing", prompt: "We need to optimize our local transport options immediately. What is your advice on our baseline strategy?", mockInput: "We should adopt a highly conservative approach due to market volatility before expanding operations.", systemInfo: "Act as a corporate director. Give a short professional reply, corrections in English if needed, and give points between 20 and 42 XP." }
+        // BANCO DE ESCENARIOS AMPLIADO PARA ADULTOS
+        const bancoEscenariosAdultos = {
+            shop: { id: 'shop', titulo: "🛒 Local Shop Counter", prompt: "Hello! Can I help you find a specific size or color for this item?", mockInput: "Yes please, I need this jacket in medium size." },
+            strategy: { id: 'strategy', titulo: "📊 Strategy & Logistics Briefing", prompt: "We need to optimize our transport options due to volatility. What is your advice on our baseline strategy?", mockInput: "We should adopt a highly conservative approach due to market volatility before expanding operations." },
+            cafe: { id: 'cafe', titulo: "☕ Ordering at a Café", prompt: "Welcome! What can I get started for you today? We have fresh croissants ready.", mockInput: "Hello, I would like a large black coffee and one hot croissant, please." },
+            directions: { id: 'directions', titulo: "🗺️ Asking for Directions", prompt: "Excuse me, I am a bit lost. Do you know where the main subway station is located around here?", mockInput: "Yes, walk straight down this street for two blocks, then turn left. You will see it." }
         };
 
         window.onload = function() {
@@ -248,6 +231,7 @@
             inicializarVoces();
             renderizarConfiguracionPerfiles();
             renderizarBotonesPerfil();
+            renderizarSelectorEscenariosAdultos();
             cambiarPerfil('perfil1');
         };
 
@@ -283,7 +267,7 @@
                 const voces = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
                 if(voces.length > 0 && voces[voiceIndexSeleccionada]) utterance.voice = voces[voiceIndexSeleccionada];
                 utterance.lang = 'en-US';
-                utterance.rate = 0.82; // Un toque más pausado para las nenas
+                utterance.rate = 0.85;
                 window.speechSynthesis.speak(utterance);
             }
         }
@@ -319,6 +303,19 @@
             });
         }
 
+        function renderizarSelectorEscenariosAdultos() {
+            const container = document.getElementById('grid-escenarios-adultos');
+            container.innerHTML = '';
+            Object.values(bancoEscenariosAdultos).forEach(e => {
+                let btn = document.createElement('button');
+                btn.id = `btn-esc-${e.id}`;
+                btn.className = "bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 p-3 rounded-xl font-bold text-xs shadow-sm transition-all text-center";
+                btn.innerText = e.titulo;
+                btn.onclick = () => seleccionarEscenarioAdulto(e.id);
+                container.appendChild(btn);
+            });
+        }
+
         function actualizarNombrePerfil(id, nuevoNombre) {
             familia[id].nombre = nuevoNombre;
             renderizarBotonesPerfil();
@@ -334,22 +331,17 @@
         function toggleConfigPanel() { document.getElementById('config-panel').classList.toggle('hidden'); }
         function guardarKey() { localStorage.setItem('ds_api_key', document.getElementById('ds-key').value); alert("Key linked."); }
 
-        // MANEJO DE TEMÁTICAS DINÁMICAS
+        // INTERFAZ INFANTIL INTERACTIVA (Escucha y repite)
         function seleccionarTematica(idTema) {
             const tema = tematicasInfantiles[idTema];
             if (!tema) return;
 
             document.getElementById('panel-tematicas').classList.add('hidden');
-            const zonaMision = document.getElementById('zona-mision');
-            zonaMision.classList.remove('hidden');
-
+            document.getElementById('zona-mision').classList.remove('hidden');
             document.getElementById('mision-categoria-titulo').innerText = tema.label;
             document.getElementById('mision-pregunta-texto').innerText = tema.pregunta;
-            
-            // Configurar botón de audio
             document.getElementById('btn-audio-infantil').onclick = () => hablarNativo(tema.audioText);
 
-            // Inyectar la interfaz correcta de respuestas
             const contenedor = document.getElementById('contenedor-respuestas');
             contenedor.innerHTML = '';
             document.getElementById('feedback-nena').classList.add('hidden');
@@ -359,9 +351,14 @@
                 grid.className = "grid grid-cols-2 gap-4";
                 tema.opciones.forEach(opt => {
                     let btn = document.createElement('button');
-                    btn.className = `${opt.estilo} h-32 rounded-2xl shadow-soft hover:scale-[1.01] transition-transform text-white font-bold text-lg border border-black/10`;
-                    btn.innerText = opt.texto;
-                    btn.onclick = () => evaluarRespuestaInfantil(opt.correcta, tema.audioText);
+                    btn.className = `${opt.estilo} h-32 rounded-2xl shadow-soft hover:scale-[1.01] transition-transform text-white font-extrabold text-lg border border-black/10 flex flex-col justify-center items-center gap-1`;
+                    btn.innerHTML = `<span>${opt.texto}</span><span class="text-[10px] text-white/80 tracking-wide font-normal">🗣️ Listen & Learn</span>`;
+                    
+                    // ESCUCHA Y MEJORA: HABLA LA OPCIÓN AL CLICKEAR ANTES DE EVALUAR
+                    btn.onclick = () => {
+                        hablarNativo(opt.texto);
+                        setTimeout(() => { evaluarRespuestaInfantil(opt.correcta, tema.audioText); }, 1000);
+                    };
                     grid.appendChild(btn);
                 });
                 contenedor.appendChild(grid);
@@ -370,21 +367,68 @@
                 flex.className = "grid grid-cols-1 sm:grid-cols-3 gap-3";
                 tema.opciones.forEach(opt => {
                     let btn = document.createElement('button');
-                    btn.className = "bg-white hover:bg-slate-50 border border-slate-200 py-3.5 rounded-xl font-semibold text-slate-700 text-sm shadow-sm transition-colors";
-                    btn.innerText = opt.texto;
-                    btn.onclick = () => evaluarRespuestaInfantil(opt.correcta, tema.audioText);
+                    btn.className = "bg-white hover:bg-slate-50 border border-slate-200 py-4 px-4 rounded-xl font-bold text-slate-700 text-sm shadow-sm transition-colors flex flex-col items-center gap-0.5";
+                    btn.innerHTML = `<span>${opt.texto}</span><span class="text-[9px] text-slate-400 font-normal">🗣️ Listen</span>`;
+                    
+                    // ESCUCHA Y MEJORA EN FORMATO MATEMÁTICA
+                    btn.onclick = () => {
+                        hablarNativo(opt.texto);
+                        setTimeout(() => { evaluarRespuestaInfantil(opt.correcta, tema.audioText); }, 1000);
+                    };
                     flex.appendChild(btn);
                 });
                 contenedor.appendChild(flex);
             }
-
-            // Hablar automáticamente la consigna al entrar
             setTimeout(() => { hablarNativo(tema.audioText); }, 200);
         }
 
         function volverATematicas() {
             document.getElementById('zona-mision').classList.add('hidden');
             document.getElementById('panel-tematicas').classList.remove('hidden');
+        }
+
+        function evaluarRespuestaInfantil(esCorrecto, repetirTexto) {
+            const f = document.getElementById('feedback-nena');
+            const p = familia[perfilActualId];
+            f.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-200', 'bg-rose-50', 'text-rose-700', 'border-rose-200');
+            
+            if (esCorrecto) {
+                f.innerText = "✨ Brilliant! Task completed successfully!";
+                f.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
+                let addXp = p.nivel === 'Initial' ? 50 : p.nivel === 'Intermediate' ? 40 : 30;
+                p.score += addXp;
+                document.getElementById('puntos-nena').innerText = p.score + " XP";
+                setTimeout(() => { hablarNativo("Brilliant! Task completed successfully!"); }, 200);
+            } else {
+                f.innerText = "🔍 Keep trying! Let's listen one more time.";
+                f.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
+                setTimeout(() => { hablarNativo("Keep trying!"); }, 200);
+                setTimeout(() => { hablarNativo(repetirTexto); }, 1500);
+            }
+            actualizarLeaderboardUI();
+        }
+
+        // CONTROL DE ESCENARIOS DE ADULTOS
+        function seleccionarEscenarioAdulto(idEsc) {
+            escenarioAdultoSeleccionado = idEsc;
+            const p = familia[perfilActualId];
+            const esc = bancoEscenariosAdultos[idEsc];
+
+            // Resaltar botón seleccionado
+            Object.values(bancoEscenariosAdultos).forEach(e => {
+                document.getElementById(`btn-esc-${e.id}`).classList.remove('border-indigo-500', 'bg-indigo-50/50', 'text-indigo-600');
+            });
+            document.getElementById(`btn-esc-${idEsc}`).classList.add('border-indigo-500', 'bg-indigo-50/50', 'text-indigo-600');
+
+            // Cargar datos en la consola
+            document.getElementById('zona-conversacion-adulto').classList.remove('hidden');
+            document.getElementById('escenario-titulo').innerText = esc.titulo;
+            document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${esc.prompt}"`;
+            document.getElementById('user-transcript').classList.add('hidden');
+            document.getElementById('ai-evaluation').classList.add('hidden');
+
+            // Hablar de forma automática
+            setTimeout(() => { hablarNativo(esc.prompt); }, 200);
         }
 
         function cambiarPerfil(id) {
@@ -401,51 +445,31 @@
                 document.getElementById('puntos-nena').innerText = p.score + " XP";
                 document.getElementById('saludo-nena').innerText = `Hello, ${p.nombre}!`;
                 document.getElementById('txt-quest-label').innerText = `Learning Quest [Level: ${p.nivel}]`;
-                volverATematicas(); // Resetear al menú de temas
+                volverATematicas();
             } else {
                 document.getElementById('vista-adultos').classList.remove('hidden');
-                const esc = escenarios[p.subtipo] || escenarios.esposa;
-                document.getElementById('subtitulo-adulto').innerText = `Active Explorer: ${p.nombre} — Current English Level: [${p.nivel}]`;
-                document.getElementById('escenario-titulo').innerText = esc.titulo;
-                document.getElementById('chat-prompt').innerHTML = `<strong>[AI Character]:</strong> "${esc.prompt}"`;
-                setTimeout(() => { hablarNativo(esc.prompt); }, 300);
+                document.getElementById('subtitulo-adulto').innerText = `Active Explorer: ${p.nombre} — English Level: [${p.nivel}]`;
+                document.getElementById('zona-conversacion-adulto').add('hidden'); // Ocultar hasta elegir escenario
+                
+                // Forzar selección del primer escenario por defecto al entrar
+                renderizarSelectorEscenariosAdultos();
+                seleccionarEscenarioAdulto('shop');
             }
             actualizarLeaderboardUI();
         }
 
         function escucharEscenarioActual() {
-            const p = familia[perfilActualId];
-            const esc = escenarios[p.subtipo] || escenarios.esposa;
-            hablarNativo(esc.prompt);
+            const esc = bancoEscenariosAdultos[escenarioAdultoSeleccionado];
+            if (esc) hablarNativo(esc.prompt);
         }
 
-        function evaluarRespuestaInfantil(esCorrecto, repetirTexto) {
-            const f = document.getElementById('feedback-nena');
-            const p = familia[perfilActualId];
-            f.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-700', 'border-emerald-200', 'bg-rose-50', 'text-rose-700', 'border-rose-200');
-            
-            if (esCorrecto) {
-                f.innerText = "✨ Brilliant! Task completed successfully!";
-                f.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
-                let addXp = p.nivel === 'Initial' ? 50 : p.nivel === 'Intermediate' ? 40 : 30;
-                p.score += addXp;
-                document.getElementById('puntos-nena').innerText = p.score + " XP";
-                hablarNativo("Brilliant! Task completed successfully!");
-            } else {
-                f.innerText = "🔍 Keep trying! Let's listen one more time.";
-                f.classList.add('bg-rose-50', 'text-rose-700', 'border-rose-200');
-                hablarNativo("Keep trying!");
-                setTimeout(() => { hablarNativo(repetirTexto); }, 1500);
-            }
-            actualizarLeaderboardUI();
-        }
-
+        // DEEPSEEK CORE CONNECTOR
         async function ejecutarLlamadaDeepSeek() {
             const apiKey = localStorage.getItem('ds_api_key');
             if(!apiKey) { alert("Please open Admin Config and save your DeepSeek API Key."); return; }
 
             const p = familia[perfilActualId];
-            const esc = escenarios[p.subtipo] || escenarios.esposa;
+            const esc = bancoEscenariosAdultos[escenarioAdultoSeleccionado];
             
             document.getElementById('user-transcript').innerHTML = `<strong>[Your Voice Input]:</strong> "${esc.mockInput}"`;
             document.getElementById('user-transcript').classList.remove('hidden');
